@@ -1,7 +1,7 @@
 ---
 id: 002
 title: Core `prompt` tagged template with type-level placeholder extraction
-status: open
+status: done
 depends_on: [001]
 ---
 
@@ -13,22 +13,22 @@ Implement the `prompt` tagged-template function. Parse `{{var}}` placeholders in
 
 ### Type level
 
-- [ ] `ExtractPlaceholders<Strings, Open, Close>` recursive template-literal type extracts identifiers between `Open` and `Close` delimiters from a `TemplateStringsArray['raw']`-shaped tuple
-- [ ] Generic — works for any `Open` / `Close` string literals, not hard-coded to `{{` / `}}`
-- [ ] Identifier shape: `[A-Za-z_][A-Za-z0-9_]*` only — anything else is not extracted (no validation error, just non-extraction)
-- [ ] Duplicates dedupe at type level: ``prompt`{{x}} {{x}}` `` infers `{ x: string }`, not `{ x: string; x: string }`
-- [ ] Empty case: ``prompt`no vars` `` infers an empty variables type — pick `Record<string, never>` over `{}` for cleaner `.with()` ergonomics
+- [x] `ExtractPlaceholders<Strings, Open, Close>` recursive template-literal type extracts identifiers between `Open` and `Close` delimiters from a `TemplateStringsArray['raw']`-shaped tuple
+- [x] Generic — works for any `Open` / `Close` string literals, not hard-coded to `{{` / `}}`
+- [x] Identifier shape: `[A-Za-z_][A-Za-z0-9_]*` only — anything else is not extracted (no validation error, just non-extraction)
+- [x] Duplicates dedupe at type level: ``prompt`{{x}} {{x}}` `` infers `{ x: string }`, not `{ x: string; x: string }`
+- [x] Empty case: ``prompt`no vars` `` infers an empty variables type — pick `Record<string, never>` over `{}` for cleaner `.with()` ergonomics
 
 ### Runtime
 
-- [ ] `prompt` is a tagged-template function reading `strings.raw`
-- [ ] Returns a compiled-template object carrying the original strings (consumed by `.with` / `.partial` / `.validate` in later issues)
-- [ ] Default delimiter is `{{ }}` per ADR-0001
+- [x] `prompt` is a tagged-template function reading `strings.raw`
+- [x] Returns a compiled-template object carrying the original strings (consumed by `.with` / `.partial` / `.validate` in later issues)
+- [x] Default delimiter is `{{ }}` per ADR-0001
 
 ### Tests
 
-- [ ] `tests/types/extract-placeholders.test-d.ts` — single placeholder, multiple, duplicates, no placeholders, identifiers with underscores/digits
-- [ ] `tests/runtime/prompt-tag.test.ts` — tagged-template invocation returns an object that holds the strings
+- [x] `tests/types/extract-placeholders.test-d.ts` — single placeholder, multiple, duplicates, no placeholders, identifiers with underscores/digits
+- [x] `tests/runtime/prompt-tag.test.ts` — tagged-template invocation returns an object that holds the strings
 
 ## References
 
