@@ -2,12 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into tsc errors."
     />
     <title>tprompt — type-safe prompt templates for TypeScript</title>
+
+    <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="tprompt" />
+    <meta property="og:title" content="tprompt — type-safe prompt templates for TypeScript" />
+    <meta
+      property="og:description"
+      content="A 2KB primitive that turns prompt placeholder typos into tsc errors before they reach the model."
+    />
+    <meta property="og:url" content="https://tprompt.pages.dev/" />
+    <meta property="og:image" content="https://tprompt.pages.dev/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="tprompt — type-safe prompt templates for TypeScript. Code example showing prompt('Hi {{name}}').with({ nme: 'world' }) flagged as a tsc error: Property 'name' is missing in type."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="tprompt — type-safe prompt templates for TypeScript" />
+    <meta
+      name="twitter:description"
+      content="A 2KB primitive that turns prompt placeholder typos into tsc errors before they reach the model."
+    />
+    <meta name="twitter:image" content="https://tprompt.pages.dev/og.png" />
+    <meta
+      name="twitter:image:alt"
+      content="tprompt — type-safe prompt templates for TypeScript. Code example showing prompt('Hi {{name}}').with({ nme: 'world' }) flagged as a tsc error: Property 'name' is missing in type."
+    />
+
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

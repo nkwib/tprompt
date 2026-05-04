@@ -11,15 +11,34 @@
     role="img"
     fill="none"
   >
-    <rect x="1" y="1" width="30" height="30" rx="7" stroke="currentColor" stroke-width="1.5" />
-    <path
-      d="M9 11l3 3-3 3"
+    <rect
+      x="3"
+      y="3"
+      width="26"
+      height="26"
+      rx="5"
       stroke="currentColor"
       stroke-width="1.6"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
-    <path d="M14 20h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    <path
+      d="M11 11 L17 16 L11 21"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <line
+      x1="17"
+      y1="22"
+      x2="23"
+      y2="22"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
   </svg>
   <span class="wordmark">tprompt</span>
 </span>

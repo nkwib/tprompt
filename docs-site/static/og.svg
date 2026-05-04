@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fafaf9"/>
+  <rect width="1200" height="8" fill="#b91c1c"/>
+
+  <g transform="translate(80, 96)" fill="none" stroke="#18181b" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect width="120" height="120" rx="22"/>
+    <path d="M40 38 L62 60 L40 82"/>
+    <line x1="62" y1="86" x2="86" y2="86"/>
+  </g>
+
+  <text x="240" y="200"
+        font-family="JetBrains Mono, Menlo, monospace"
+        font-size="116" font-weight="700"
+        fill="#18181b" letter-spacing="-3">tprompt</text>
+
+  <text x="80" y="312"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+        font-size="44" font-weight="600"
+        fill="#18181b">Type-safe prompt templates for TypeScript</text>
+
+  <text x="80" y="362"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+        font-size="26" font-weight="400"
+        fill="#57534e">A 2KB primitive that turns prompt placeholder typos into tsc errors.</text>
+
+  <g transform="translate(80, 416)">
+    <rect width="1040" height="142" rx="14" fill="#f5f5f4" stroke="#e7e5e4" stroke-width="1"/>
+    <text x="32" y="56"
+          font-family="JetBrains Mono, Menlo, monospace"
+          font-size="28" font-weight="500"
+          fill="#1c1917"><tspan fill="#6b21a8">prompt</tspan><tspan fill="#57534e">(</tspan><tspan fill="#15803d">'Hi {{name}}'</tspan><tspan fill="#57534e">).</tspan><tspan fill="#1e40af">with</tspan><tspan fill="#57534e">({ </tspan><tspan fill="#b91c1c">nme</tspan><tspan fill="#57534e">: </tspan><tspan fill="#15803d">'world'</tspan><tspan fill="#57534e"> })</tspan></text>
+    <text x="32" y="106"
+          font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+          font-size="24" font-weight="500"
+          fill="#b91c1c"><tspan font-weight="700">tsc</tspan> ▸ Property 'name' is missing in type</text>
+  </g>
+</svg>
