@@ -45,6 +45,23 @@ export type VariablesOf<P extends string> = [P] extends [never]
   ? Record<string, never>
   : { readonly [K in P]: string };
 
+export interface PartialApplied<
+  Strings extends readonly string[],
+  Open extends string,
+  Close extends string,
+  Bound extends string
+> {
+  readonly strings: Strings;
+  readonly open: Open;
+  readonly close: Close;
+  readonly placeholders: ReadonlyArray<
+    Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>
+  >;
+  with(
+    vars: VariablesOf<Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>>
+  ): string;
+}
+
 export interface Compiled<
   Strings extends readonly string[],
   Open extends string,
@@ -57,4 +74,7 @@ export interface Compiled<
   with(
     vars: VariablesOf<ExtractPlaceholders<Strings, Open, Close>>
   ): string;
+  partial<const Bound extends ExtractPlaceholders<Strings, Open, Close>>(
+    vars: { readonly [K in Bound]: string }
+  ): PartialApplied<Strings, Open, Close, Bound>;
 }
