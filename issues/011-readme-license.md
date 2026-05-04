@@ -1,7 +1,7 @@
 ---
 id: 011
 title: README final polish
-status: open
+status: done
 depends_on: [010]
 ---
 
@@ -11,15 +11,15 @@ Lock the public-facing surface. The README first paragraph is the wedge — it h
 
 ## Acceptance criteria
 
-- [ ] First paragraph: one sentence on what promptkit is (2KB tagged-template, type-safe prompt placeholders), one sentence on the wedge (typo becomes `tsc` error before reaching the model)
-- [ ] Public scope line in the first paragraph: "variables only, no template logic — no `{{#if}}`, no loops"
-- [ ] Quick-start: a working snippet (`pnpm add promptkit zod` + the smallest possible example with `.with({...})`)
-- [ ] Pluggable delimiter section: shows `makePromptTag({ open, close })` AND `import { prompt } from 'promptkit/single-brace'`
-- [ ] ESM/CJS section: one paragraph saying "transparent via conditional exports — no `/compat` subpath needed" (per ADR-0003)
-- [ ] `.validate()` / `.validateSafe()` section: explains throw-by-default vs Result-on-safe; references the round-table's "explain aggressively" rule
-- [ ] Non-goals section repeats the scope line and adds: scope-creep PRs (`{{#if}}`, loops, expression placeholders) get closed with a link to ADR-0001
-- [ ] Links to all three ADRs work from the README
-- [ ] LICENSE file already exists at repo root (verify only)
+- [x] First paragraph: one sentence on what promptkit is (2KB primitive, type-safe prompt placeholders), one sentence on the wedge (typo becomes `tsc` error before reaching the model). _("tagged-template" replaced with "primitive" per the architectural pivot in ADR-0002.)_
+- [x] Public scope line in the first paragraph: "variables only, no template logic — no `{{#if}}`, no loops"
+- [x] Quick-start: a working snippet (`pnpm add promptkit` + the smallest possible example with `.with({...})`; `zod` mentioned as optional)
+- [x] Pluggable delimiter section: shows `makePromptTag({ open, close })` AND `import { prompt } from 'promptkit/single-brace'`
+- [x] ESM/CJS section: one paragraph saying "transparent via conditional exports — no `/compat` subpath needed" (per ADR-0003)
+- [x] `.validate()` / `.validateSafe()` section: explains throw-by-default vs Result-on-safe; explicitly tells the reader to read it slowly
+- [x] Non-goals section repeats the scope line and adds: scope-creep PRs (`{{#if}}`, loops, expression placeholders) get closed with a link to ADR-0001
+- [x] Links to all three ADRs work from the README
+- [x] LICENSE file already exists at repo root (verified)
 
 ## References
 
