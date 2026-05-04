@@ -1,7 +1,7 @@
 ---
 id: 009
 title: Docs site skeleton (Svelte + MDsveX)
-status: open
+status: done
 depends_on: [006]
 ---
 
@@ -11,12 +11,12 @@ Stand up the docs site under `docs-site/` so the project has a homepage. Lean �
 
 ## Acceptance criteria
 
-- [ ] `docs-site/` is a SvelteKit project with MDsveX configured
-- [ ] Static-adapter only — no server runtime
-- [ ] Home page (`/`) renders with: title, the non-goal first paragraph (from `README.md`), a placeholder for the TS Playground demo
-- [ ] `cd docs-site && pnpm install && pnpm build` produces a deployable static site (`docs-site/build/`)
-- [ ] Site has its own `package.json` and `pnpm-lock.yaml` — independent from the library's
-- [ ] `docs-site/.gitignore` excludes `.svelte-kit/`, `build/`, `node_modules/` (covered at repo root, but local one is good practice)
+- [x] `docs-site/` is a SvelteKit project with MDsveX configured
+- [x] Static-adapter only — no server runtime
+- [x] Home page (`/`) renders with: title, the non-goal first paragraph (from `README.md`), a placeholder for the TS Playground demo
+- [x] `cd docs-site && pnpm install && pnpm build` produces a deployable static site (`docs-site/build/`)
+- [x] Site has its own `package.json` and `pnpm-lock.yaml` — independent from the library's
+- [x] `docs-site/.gitignore` excludes `.svelte-kit/`, `build/`, `node_modules/` (covered at repo root, but local one is good practice)
 
 ## References
 
