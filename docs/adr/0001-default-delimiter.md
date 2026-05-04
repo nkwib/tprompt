@@ -4,7 +4,7 @@ status: accepted
 
 # Default delimiter is `{{var}}`
 
-The default placeholder delimiter is the double-brace `{{` … `}}` pair. The parser is pluggable per call site, but the un-configured default — the one that ships in every README example, the TS Playground homepage link, and the Vercel AI SDK before/after demo — uses `{{var}}`.
+The default placeholder delimiter is the double-brace `{{` … `}}` pair. The parser is pluggable per call site, but the un-configured default — the one that ships in every README example, the TS Playground homepage link (e.g. `prompt('Hello {{name}}').with({ name: 'Alice' })`), and the Vercel AI SDK before/after demo — uses `{{var}}`.
 
 ## Why
 
@@ -18,7 +18,7 @@ Three reasons, in order of weight:
 
 - **`{{var}}`** — chosen. See above.
 - **`{var}`** — rejected as the default. Real subcommunity (LangChain/BAML port users, Python-influenced teams) but the JSON-collision footgun is unacceptable for the un-configured path. Shipped as a named export (`promptkit/single-brace` or `promptkit/fstring` — exact module name decided at code time) so opt-in is one import away.
-- **`${var}`** — rejected. This is the literal JS template-literal interpolation syntax. Inside a tagged template, `${name}` is evaluated by the JS runtime *before* the tag function ever runs — both `strings.raw` already contains the substituted value and `name` must be lexically in scope or you get `ReferenceError`. There is no static placeholder name to extract at the type level. Choosing it would defeat the type-inference wedge that is the entire premise of the library.
+- **`${var}`** — rejected. This is the literal JS template-literal interpolation syntax. The library's compile call takes a regular string argument; if a user wrote `prompt(`Hello ${name}`)`, JS evaluates `${name}` before `prompt` ever runs — `name` must be lexically in scope or you get `ReferenceError`, and there is no static placeholder name to extract at the type level. Choosing it would defeat the type-inference wedge that is the entire premise of the library.
 - **`$var`** — rejected. A sigil-prefix form (no closing delimiter, no JS-interpolation conflict because `$var` is not template-literal syntax) is technically extractable. Rejected for two reasons: (a) visual confusion with `${var}` will lead readers to assume runtime JS interpolation and write code that breaks at the first scoping mistake; (b) old-school feel — sigil-prefix templating reads as Perl/PHP-era, against the modern-TS aesthetic of the library.
 
 ## Consequences

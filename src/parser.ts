@@ -30,3 +30,17 @@ export function extractPlaceholders(
   }
   return [...seen];
 }
+
+export function renderTemplate(
+  strings: readonly string[],
+  open: string,
+  close: string,
+  vars: Readonly<Record<string, unknown>>
+): string {
+  const re = makePlaceholderRegex(open, close);
+  let out = '';
+  for (const segment of strings) {
+    out += segment.replace(re, (_match, name: string) => String(vars[name]));
+  }
+  return out;
+}

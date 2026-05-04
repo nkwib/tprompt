@@ -49,6 +49,24 @@ describe('ExtractPlaceholders — generic over delimiters', () => {
   it('works with custom angle-bracket delimiters', () => {
     expectTypeOf<ExtractPlaceholders<['<<name>>'], '<<', '>>'>>().toEqualTypeOf<'name'>();
   });
+
+  it('three repeated placeholders → single key', () => {
+    expectTypeOf<
+      ExtractPlaceholders<['{{x}} and {{x}} and {{x}}'], '{{', '}}'>
+    >().toEqualTypeOf<'x'>();
+  });
+
+  it('JSON-content with one placeholder', () => {
+    expectTypeOf<
+      ExtractPlaceholders<['Output: {"name": "alice"} for {{user}}'], '{{', '}}'>
+    >().toEqualTypeOf<'user'>();
+  });
+
+  it('mixed valid/invalid identifiers', () => {
+    expectTypeOf<
+      ExtractPlaceholders<['{{1bad}} {{good}}'], '{{', '}}'>
+    >().toEqualTypeOf<'good'>();
+  });
 });
 
 describe('VariablesOf', () => {
