@@ -1,0 +1,75 @@
+{
+  "name": "promptkit",
+  "version": "0.0.0",
+  "description": "Type-safe prompt template library for TypeScript. A 2KB tagged-template primitive that turns prompt placeholder typos into tsc errors.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./single-brace": {
+      "import": "./dist/single-brace.js",
+      "require": "./dist/single-brace.cjs",
+      "types": "./dist/single-brace.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CONTEXT.md",
+    "docs/adr"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run && pnpm test:cjs",
+    "test:watch": "vitest",
+    "test:types": "vitest --typecheck.only",
+    "test:cjs": "node tests/cjs-smoke/test.cjs",
+    "lint": "tsc --noEmit",
+    "prepack": "pnpm build",
+    "publish:dry": "pnpm build && pnpm publish --dry-run --no-git-checks"
+  },
+  "peerDependencies": {
+    "zod": ">=3.23.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "zod": "^3.23.0"
+  },
+  "keywords": [
+    "prompt",
+    "template",
+    "typescript",
+    "type-safe",
+    "llm",
+    "ai",
+    "tagged-template"
+  ],
+  "author": "Gabriele Magno <gabriele.magno@nearform.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielmagno/promptkit.git"
+  },
+  "homepage": "https://github.com/gabrielmagno/promptkit"
+}
