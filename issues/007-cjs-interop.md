@@ -1,7 +1,7 @@
 ---
 id: 007
 title: CJS interop smoke test
-status: open
+status: done
 depends_on: [006]
 ---
 
@@ -11,15 +11,15 @@ Prove the dual-publish actually works from a CJS consumer. Set up `tests/cjs-smo
 
 ## Acceptance criteria
 
-- [ ] `tests/cjs-smoke/test.cjs` does:
-  - [ ] `const { prompt } = require('../../dist/index.cjs');`
-  - [ ] `const { prompt: sb } = require('../../dist/single-brace.cjs');`
-  - [ ] Asserts a basic ``prompt`Hi {{name}}`.with({name:'a'})`` returns `'Hi a'`
-  - [ ] Same for `single-brace`: ``sb`Hi {name}`.with({name:'b'})`` returns `'Hi b'`
-  - [ ] Throws on assertion failure, exits 0 on success
-- [ ] `pnpm test:cjs` runs it and exits 0
-- [ ] No `instanceof` check is required in the test (per ADR-0003 invariant 2)
-- [ ] Replace the issue-001 stub `test.cjs` with the real assertions
+- [x] `tests/cjs-smoke/test.cjs` does:
+  - [x] `const { prompt } = require('../../dist/index.cjs');`
+  - [x] `const { prompt: sb } = require('../../dist/single-brace.cjs');`
+  - [x] Asserts `prompt('Hi {{name}}').with({name:'a'})` returns `'Hi a'`
+  - [x] Same for `single-brace`: `sb('Hi {name}').with({name:'b'})` returns `'Hi b'`
+  - [x] Throws on assertion failure (via `node:assert/strict`), exits 0 on success
+- [x] `pnpm test:cjs` runs it and exits 0
+- [x] No `instanceof` check is required in the test (per ADR-0003 invariant 2)
+- [x] Replace the issue-001 stub `test.cjs` with the real assertions
 
 ## References
 
