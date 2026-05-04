@@ -1,0 +1,219 @@
+---
+title: 'tprompt · API reference'
+---
+
+<svelte:head>
+  <title>tprompt · API reference</title>
+  <meta
+    name="description"
+    content="Complete API reference: prompt, makePromptTag, Compiled, .with, .partial, .validate, .validateSafe."
+  />
+</svelte:head>
+
+# API reference
+
+The full public surface of tprompt is one factory, one default export, and one returned interface (`Compiled`) with four methods. Everything else is types.
+
+## Public exports
+
+| Export | From | What |
+| --- | --- | --- |
+| `prompt` | `'tprompt'` | The default Compile call, pre-applied to `{'{{var}}'}` |
+| `prompt` | `'tprompt/single-brace'` | Pre-applied to `{'{var}'}` |
+| `makePromptTag` | `'tprompt'` | Factory; returns a `prompt` for any `{ open, close }` pair |
+| `Compiled`, `PartialApplied`, `Validated`, `ValidatedSafe`, etc. | `'tprompt'` | Type-only exports — covered below |
+
+## `prompt`
+
+```ts
+const prompt: <const S extends string>(template: S) => Compiled<readonly [S], '{{', '}}'>;
+```
+
+The `prompt` import from `'tprompt'` is `makePromptTag({ open: '{{', close: '}}' })`. The `<const S extends string>` is what makes the wedge work — it preserves the literal type of the template through the call so `ExtractPlaceholders` can run at the type level.
+
+```ts
+import { prompt } from 'tprompt';
+
+const t = prompt('Hi {{name}}');
+//        ^? Compiled<readonly ['Hi {{name}}'], '{{', '}}'>
+```
+
+## `makePromptTag(options)`
+
+```ts
+function makePromptTag<O extends string, C extends string>(
+  options: ParserOptions<O, C>
+): <const S extends string>(template: S) => Compiled<readonly [S], O, C>;
+
+interface ParserOptions<Open extends string, Close extends string> {
+  readonly open: Open;
+  readonly close: Close;
+}
+```
+
+Returns a `prompt`-shaped function specialised to a delimiter pair. Used at module top-level for project-wide custom delimiters or per call site for prompts that contain literal `{'{{ }}'}` content.
+
+```ts
+import { makePromptTag } from 'tprompt';
+
+const angle = makePromptTag({ open: '<<', close: '>>' });
+angle('Hi <<name>>').with({ name: 'world' }); // "Hi world"
+```
+
+## `Compiled<Strings, Open, Close>`
+
+The return type of every Compile call. Carries the original template segments and exposes four methods.
+
+```ts
+interface Compiled<Strings, Open, Close> {
+  readonly strings: Strings;
+  readonly open: Open;
+  readonly close: Close;
+  readonly placeholders: ReadonlyArray<ExtractPlaceholders<Strings, Open, Close>>;
+
+  with(vars: VariablesOf<...>): string;
+  partial<const Bound extends ...>(vars: { readonly [K in Bound]: string }): PartialApplied<...>;
+  validate<TOutput>(schema: SchemaLike<TOutput>): Validated<...>;
+  validateSafe<TOutput>(schema: SchemaLike<TOutput>): ValidatedSafe<...>;
+}
+```
+
+### `.with({...})`
+
+Renders the template with all placeholders bound. The variables-object type is inferred from the template — any missing or extra key is a `tsc` error.
+
+```ts
+const t = prompt('Hi {{name}}, on {{plan}}');
+t.with({ name: 'Alice', plan: 'pro' });
+// "Hi Alice, on pro"
+
+t.with({ name: 'Alice' });
+//      ^^^^^^^^^^^^^^^ Property 'plan' is missing
+```
+
+### `.partial({...})`
+
+Pre-binds a subset of placeholders. Returns a `PartialApplied` whose `.with({...})` requires only the remainder. The return type does **not** carry `.partial` — chaining `.partial(...).partial(...)` is a `tsc` error by design.
+
+```ts
+const t = prompt('You are a {{role}} agent for {{userName}}.');
+
+const support = t.partial({ role: 'support' });
+support.with({ userName: 'alice' });
+// "You are a support agent for alice."
+
+support.partial({ userName: 'alice' });
+//      ^^^^^^^ Property 'partial' does not exist on type 'PartialApplied<...>'
+```
+
+### `.validate(schema)`
+
+Wraps the compiled template with a runtime validator that **throws** on invalid input.
+
+```ts
+import { z } from 'zod';
+
+const greet = prompt('Hi {{name}}').validate(
+  z.object({ name: z.string().min(2) })
+);
+greet.with({ name: 'a' });   // throws ZodError
+```
+
+The schema must accept an object whose required keys cover the placeholder set. Anything with `.parse(value)` and `.safeParse(value)` qualifies — Zod, Valibot, ArkType, or your own.
+
+### `.validateSafe(schema)`
+
+Same shape, but `.with({...})` returns a `ValidationResult` instead of throwing.
+
+```ts
+type ValidationResult =
+  | { readonly ok: true; readonly value: string }
+  | { readonly ok: false; readonly error: unknown };
+```
+
+```ts
+const safe = prompt('Hi {{name}}').validateSafe(
+  z.object({ name: z.string().min(2) })
+);
+const r = safe.with({ name: 'a' });
+if (r.ok) console.log(r.value); else console.error(r.error);
+```
+
+`.validate` and `.validateSafe` produce mutually exclusive return shapes — pick one per call site. Mixing them produces dead branches.
+
+## Type helpers
+
+These are all `export type` — zero runtime cost.
+
+### `ExtractPlaceholders<Strings, Open, Close>`
+
+Recursive template-literal type that extracts placeholder names from a tuple of template segments. Identifiers must match `[A-Za-z_][A-Za-z0-9_]*` — non-identifier matches are skipped (so `{'{{ user.name }}'}` is **not** a placeholder).
+
+```ts
+type T = ExtractPlaceholders<readonly ['Hi {{name}}, on {{plan}}'], '{{', '}}'>;
+//   ^? "name" | "plan"
+```
+
+### `VariablesOf<P>`
+
+Maps a placeholder union into the required variables-object type.
+
+```ts
+type V = VariablesOf<'name' | 'plan'>;
+//   ^? { readonly name: string; readonly plan: string }
+```
+
+### `SchemaLike<TOutput>`
+
+The structural validator interface — what `.validate` and `.validateSafe` accept.
+
+```ts
+interface SchemaLike<TOutput> {
+  parse(value: unknown): TOutput;
+  safeParse(value: unknown):
+    | { readonly success: true; readonly data: TOutput }
+    | { readonly success: false; readonly error: unknown };
+}
+```
+
+### `ValidationResult`
+
+```ts
+type ValidationResult =
+  | { readonly ok: true; readonly value: string }
+  | { readonly ok: false; readonly error: unknown };
+```
+
+### Other interfaces
+
+- `PartialApplied<Strings, Open, Close, Bound>` — return of `.partial({...})`. Same as `Compiled` minus `.partial`.
+- `Validated<Strings, Open, Close>` — return of `.validate(schema)`.
+- `ValidatedSafe<Strings, Open, Close>` — return of `.validateSafe(schema)`.
+- `ValidatedPartial<Strings, Open, Close, Bound>` — partial-then-validate or validate-then-partial.
+- `ValidatedSafePartial<Strings, Open, Close, Bound>` — same, safe variant.
+
+All five share `.strings`, `.open`, `.close`, `.placeholders`, and `.with` — the differences are visible only in the type-level set of methods that remain valid.
+
+## Module entry points
+
+```ts
+// Default — {{var}} (LangChain / BAML / OpenAI / Anthropic convention)
+import { prompt, makePromptTag } from 'tprompt';
+
+// Pre-applied — {var} (Python f-string-style)
+import { prompt } from 'tprompt/single-brace';
+
+// Type-only
+import type {
+  Compiled,
+  PartialApplied,
+  Validated,
+  ValidatedSafe,
+  ExtractPlaceholders,
+  VariablesOf,
+  SchemaLike,
+  ValidationResult
+} from 'tprompt';
+```
+
+The subpath namespace is **reserved for behaviour variants** (delimiter, escape policy, future flavours). ESM/CJS interop is handled by conditional exports — there is no `tprompt/compat`. See [ADR-0002](/adr/0002-pluggable-parser-architecture) and [ADR-0003](/adr/0003-esm-cjs-interop-boundary).

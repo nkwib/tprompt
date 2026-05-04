@@ -8,10 +8,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const cliPath = join(__dirname, '..', '..', 'dist', 'cli.cjs');
 
-describe.skipIf(!existsSync(cliPath))('promptkit init CLI', () => {
+describe.skipIf(!existsSync(cliPath))('tprompt init CLI', () => {
   let workDir: string;
   beforeEach(() => {
-    workDir = mkdtempSync(join(tmpdir(), 'promptkit-cli-'));
+    workDir = mkdtempSync(join(tmpdir(), 'tprompt-cli-'));
   });
   afterEach(() => {
     rmSync(workDir, { recursive: true, force: true });
@@ -23,7 +23,7 @@ describe.skipIf(!existsSync(cliPath))('promptkit init CLI', () => {
       encoding: 'utf8'
     });
     const example = readFileSync(join(workDir, 'prompts', 'example.ts'), 'utf8');
-    expect(example).toContain("import { prompt } from 'promptkit';");
+    expect(example).toContain("import { prompt } from 'tprompt';");
     expect(example).toContain("prompt('Hello, {{name}}!')");
     expect(example).toContain('.with({ name:');
     expect(stdout).toContain('created');

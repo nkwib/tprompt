@@ -1,4 +1,4 @@
-# promptkit
+# tprompt
 
 A 2KB TypeScript library that makes LLM prompt variables a first-class type. A typo in `{{usrName}}` becomes a `tsc` error before it reaches the model.
 

@@ -1,6 +1,6 @@
 ---
 id: 008
-title: `npx promptkit init` scaffold CLI
+title: `npx tprompt init` scaffold CLI
 status: done
 depends_on: [006]
 ---
@@ -21,7 +21,7 @@ Add a small CLI that scaffolds a `prompts/` directory in the user's project with
 
 ## References
 
-- Round-table final.md — `npx promptkit init` is part of the sub-60-second hook
+- Round-table final.md — `npx tprompt init` is part of the sub-60-second hook
 
 ## Notes
 

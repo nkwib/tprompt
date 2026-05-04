@@ -50,5 +50,5 @@ Do NOT run `npm publish` (without `--dry-run`). The actual publish is the human'
 
 Two manual TODOs remain after dry-run is clean (record them in the final commit body):
 
-1. Push the repo to GitHub at `github.com/<user>/promptkit`, set the repo description to the TS Playground URL from issue 010.
+1. Push the repo to GitHub at `github.com/<user>/tprompt`, set the repo description to the TS Playground URL from issue 010.
 2. Run `pnpm publish` for real once the repo is public and `npm` is authenticated.

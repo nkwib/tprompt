@@ -1,8 +1,17 @@
 ---
-status: accepted
+title: 'ADR-0003 · ESM/CJS interop boundary'
 ---
 
-# ESM/CJS interop boundary: ESM-source dual-publish with `sideEffects: false`
+<svelte:head>
+  <title>ADR-0003 · ESM/CJS interop boundary</title>
+</svelte:head>
+
+<div class="adr-meta">
+  <span class="status">accepted</span>
+  <a class="back" href="/adr">← All decisions</a>
+</div>
+
+# ADR-0003 · ESM/CJS interop boundary: ESM-source dual-publish with `sideEffects: false`
 
 ## The boundary
 
@@ -31,14 +40,14 @@ Source is ESM (`"type": "module"` in `package.json`, `import` syntax in `.ts` fi
 
 `sideEffects: false` unlocks aggressive tree-shaking in consumer bundlers (Vite, esbuild, webpack 5+, Rollup). This is load-bearing for the 2KB pitch: the worst-case consumer experience for a "tiny utility library" is importing one thing and being unable to shake the rest.
 
-There is no `tprompt/compat` subpath. Module-system interop is handled by conditional exports, not by carving out a CJS-flavour entry point — see [ADR-0002](./0002-pluggable-parser-architecture.md) for why subpath exports are reserved for behaviour variants only.
+There is no `tprompt/compat` subpath. Module-system interop is handled by conditional exports, not by carving out a CJS-flavour entry point — see [ADR-0002](/adr/0002-pluggable-parser-architecture) for why subpath exports are reserved for behaviour variants only.
 
 ## The invariants the boundary depends on
 
 The boundary above is only safe — and the `sideEffects: false` claim only true — while the source code holds these invariants:
 
 1. **No module-level singletons or shared mutable state.** Supports both the dual-package hazard analysis and the `sideEffects: false` claim. A module-level cache (e.g. memoised compiled templates keyed by `strings.raw` identity) would forfeit both: tree-shaking would have to assume the side-effect of cache initialisation, and an ESM+CJS dual-load would fork cache state.
-2. **No `instanceof` checks against library-defined classes.** Supports dual-package hazard non-existence. A `prompt`...`` invocation today returns a plain object literal closed over `strings.raw`; it has no class. Introducing a `CompiledTemplate` class with an `instanceof` check anywhere in the API would mean an ESM-loaded template tested against a CJS-imported `CompiledTemplate` would silently return `false`.
+2. **No `instanceof` checks against library-defined classes.** Supports dual-package hazard non-existence. A `prompt(...)` invocation today returns a plain object literal closed over `strings.raw`; it has no class. Introducing a `CompiledTemplate` class with an `instanceof` check anywhere in the API would mean an ESM-loaded template tested against a CJS-imported `CompiledTemplate` would silently return `false`.
 3. **No Symbol-keyed registries.** Supports dual-package hazard non-existence. A `Symbol('tprompt.template')` allocated at module top-level would have a different identity in the ESM vs. CJS copy of the module. Plain string keys do not have this hazard.
 4. **No top-level await in source.** Supports both `sideEffects: false` and CJS-publish. TLA forces dynamic-import-only consumption from CJS (`require` of a TLA module throws), which would silently break the conditional-exports promise. It also marks the module as having a side-effect from the bundler's perspective.
 5. **No module-init work.** Supports `sideEffects: false`. File I/O, network calls, parser-cache warming, registering a global Zod resolver, or any work that runs at import time — all break the claim. The factory `makePromptTag` is the right home for any deferred initialisation; module top-level must remain pure declarations.
@@ -56,7 +65,43 @@ If a future feature requires invalidating any of these — say, a perf-driven mo
 
 ## Consequences
 
-- Adding any of {module-level cache, `instanceof` check, Symbol registry, TLA, module-init work} is a structural change, not a feature change. It must come with a revision of this ADR and a deliberate decision to drop one of {`sideEffects: false`, dual-package safety, CJS publish}.
+- Adding any of `{module-level cache, instanceof check, Symbol registry, TLA, module-init work}` is a structural change, not a feature change. It must come with a revision of this ADR and a deliberate decision to drop one of `{sideEffects: false, dual-package safety, CJS publish}`.
 - The `.js`-extension-on-relative-imports requirement under `--module nodenext` is a contributor-experience papercut, not an architectural cost. A one-line note in `CONTRIBUTING.md` covers it; not worth recording here beyond this mention.
 - Consumers on Node 18 or below who want to use the library can do so (the runtime supports conditional exports from Node 14+) but receive no support guarantee and no test coverage. The `engines` field is a soft warning, not a hard gate.
 - The `package.json#exports` map gains exactly one block per behaviour-variant subpath (per ADR-0002), each with the same `import` / `require` / `types` triple. New delimiter variants follow the pattern; module-system flavours never appear here.
+
+<style>
+  .adr-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-4);
+    font-size: var(--fs-sm);
+  }
+
+  .adr-meta :global(.status) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-good);
+    background: var(--c-good-soft);
+    border: 1px solid color-mix(in srgb, var(--c-good) 30%, transparent);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  .adr-meta :global(.back) {
+    color: var(--c-text-muted);
+    text-decoration: none;
+  }
+
+  .adr-meta :global(.back:hover) {
+    color: var(--c-text);
+    text-decoration: underline;
+  }
+</style>

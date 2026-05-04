@@ -1,6 +1,6 @@
-# promptkit — coding kickoff
+# tprompt — coding kickoff
 
-You are working in `~/code/promptkit/`. Your job is to take this repo from scaffolded skeleton to publishable npm package: source code, tests, build, docs site, all green locally. Stop at `npm publish --dry-run`. Do not push anywhere.
+You are working in `~/code/tprompt/`. Your job is to take this repo from scaffolded skeleton to publishable npm package: source code, tests, build, docs site, all green locally. Stop at `npm publish --dry-run`. Do not push anywhere.
 
 ## Read first (in this order, before any code)
 

@@ -7,7 +7,7 @@ depends_on: [006]
 
 ## Goal
 
-Prove the dual-publish actually works from a CJS consumer. Set up `tests/cjs-smoke/test.cjs` as a tiny CJS script that requires `promptkit` and `promptkit/single-brace` from the built `dist/`, asserts on a basic substitution, and exits 0.
+Prove the dual-publish actually works from a CJS consumer. Set up `tests/cjs-smoke/test.cjs` as a tiny CJS script that requires `tprompt` and `tprompt/single-brace` from the built `dist/`, asserts on a basic substitution, and exits 0.
 
 ## Acceptance criteria
 

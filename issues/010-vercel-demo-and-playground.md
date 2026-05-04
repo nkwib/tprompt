@@ -7,7 +7,7 @@ depends_on: [009]
 
 ## Goal
 
-The headline demo and the launch-surface wiring. Build the side-by-side Vercel AI SDK before/after using a real multi-variable system prompt. Generate the TS Playground URL that demonstrates the typo-becomes-error wedge. Wire it into `package.json#homepage` so it's discoverable from `npm info promptkit` and search results.
+The headline demo and the launch-surface wiring. Build the side-by-side Vercel AI SDK before/after using a real multi-variable system prompt. Generate the TS Playground URL that demonstrates the typo-becomes-error wedge. Wire it into `package.json#homepage` so it's discoverable from `npm info tprompt` and search results.
 
 ## Acceptance criteria
 
@@ -16,7 +16,7 @@ The headline demo and the launch-surface wiring. Build the side-by-side Vercel A
 - [x] `docs-site/src/routes/before-after/+page.svx` renders the side-by-side
 - [x] Real multi-variable system prompt: `userName`, `planTier`, `locale`
 - [x] "Before" panel: vanilla string-template version with a `{{usrName}}` typo, showing the runtime output that would have shipped to the model
-- [x] "After" panel: promptkit version with the same typo, with the `tsc` error embedded as a code block
+- [x] "After" panel: tprompt version with the same typo, with the `tsc` error embedded as a code block
 
 ### TS Playground
 

@@ -1,51 +1,51 @@
 <script>
+  import '../styles/global.css';
+  import Header from '$lib/components/Header.svelte';
+  import Footer from '$lib/components/Footer.svelte';
+
   let { children } = $props();
 </script>
 
-<main>
-  {@render children()}
-</main>
+<svelte:head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+  />
+  <script>
+    // Apply stored theme before paint to avoid FOUC.
+    (function () {
+      try {
+        var stored = localStorage.getItem('tprompt-theme');
+        var theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.dataset.theme = theme;
+      } catch (_) {}
+    })();
+  </script>
+</svelte:head>
+
+<div class="page-shell">
+  <Header />
+  <div class="page-content">
+    {@render children()}
+  </div>
+  <Footer />
+</div>
 
 <style>
-  :global(html) {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
-    color: #1f2328;
-    background: #fff;
+  .page-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
-  :global(body) {
-    margin: 0;
-  }
-
-  main {
-    max-width: 44rem;
-    margin: 0 auto;
-    padding: 3rem 1.25rem;
-  }
-
-  :global(h1) {
-    font-size: 2rem;
-    margin-bottom: 0.25rem;
-  }
-
-  :global(h2) {
-    font-size: 1.25rem;
-    margin-top: 2rem;
-  }
-
-  :global(code) {
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    background: #f6f8fa;
-    padding: 0.1rem 0.35rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-
-  :global(a) {
-    color: #0969da;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+  .page-content {
+    flex: 1;
   }
 </style>
