@@ -27,13 +27,16 @@
     "CONTEXT.md",
     "docs/adr"
   ],
+  "bin": {
+    "promptkit": "./dist/cli.cjs"
+  },
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest run && pnpm build && pnpm test:cjs",
+    "test": "pnpm build && vitest run && pnpm test:cjs",
     "test:watch": "vitest",
     "test:types": "vitest --typecheck.only",
     "test:cjs": "node tests/cjs-smoke/test.cjs",
