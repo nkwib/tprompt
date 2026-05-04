@@ -1,7 +1,7 @@
 ---
 id: 005
 title: `.validate()` and `.validateSafe()` with Zod peer
-status: open
+status: done
 depends_on: [003]
 ---
 
@@ -13,21 +13,21 @@ Add runtime validation. `.validate(schema)` returns a compiled template that thr
 
 ### Type level
 
-- [ ] `validate` and `validateSafe` accept a schema whose parsed output structurally matches the inferred placeholder set
-- [ ] After `.validate()`, the return type still has `.with` (and `.partial` if upstream)
-- [ ] After `.validateSafe()`, `.with(vars)` returns the Result discriminated union, not raw `string`
+- [x] `validate` and `validateSafe` accept a schema whose parsed output structurally matches the inferred placeholder set
+- [x] After `.validate()`, the return type still has `.with` (and `.partial` if upstream)
+- [x] After `.validateSafe()`, `.with(vars)` returns the Result discriminated union, not raw `string`
 
 ### Runtime
 
-- [ ] `.validate(schema).with(vars)` re-throws Zod errors on invalid input
-- [ ] `.validateSafe(schema).with(vars)` returns `{ ok: false, error }` on invalid input — never throws
-- [ ] On valid input, both produce the substituted string (the `value` field for safe mode)
-- [ ] Zod is a `peerDependencies` entry, marked optional via `peerDependenciesMeta` — the library does NOT import Zod at module load (per ADR-0003 invariant 5)
+- [x] `.validate(schema).with(vars)` re-throws Zod errors on invalid input
+- [x] `.validateSafe(schema).with(vars)` returns `{ ok: false, error }` on invalid input — never throws
+- [x] On valid input, both produce the substituted string (the `value` field for safe mode)
+- [x] Zod is a `peerDependencies` entry, marked optional via `peerDependenciesMeta` — the library does NOT import Zod at module load (per ADR-0003 invariant 5)
 
 ### Tests
 
-- [ ] `tests/types/validate.test-d.ts` — schema misaligned with placeholders is a type error; safe-mode return type is a Result discriminated union
-- [ ] `tests/runtime/validate.test.ts` — throw-on-invalid, valid passes, safe-mode Result both branches
+- [x] `tests/types/validate.test-d.ts` — schema misaligned with placeholders is a type error; safe-mode return type is a Result discriminated union
+- [x] `tests/runtime/validate.test.ts` — throw-on-invalid, valid passes, safe-mode Result both branches
 
 ## References
 

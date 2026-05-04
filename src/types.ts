@@ -45,6 +45,92 @@ export type VariablesOf<P extends string> = [P] extends [never]
   ? Record<string, never>
   : { readonly [K in P]: string };
 
+export type SafeParseResult<TOutput> =
+  | { readonly success: true; readonly data: TOutput }
+  | { readonly success: false; readonly error: unknown };
+
+export interface SchemaLike<TOutput> {
+  parse(value: unknown): TOutput;
+  safeParse(value: unknown): SafeParseResult<TOutput>;
+}
+
+export type ValidationResult =
+  | { readonly ok: true; readonly value: string }
+  | { readonly ok: false; readonly error: unknown };
+
+type AcceptableSchemaOutput<TPlaceholders extends string> =
+  [TPlaceholders] extends [never]
+    ? Record<string, unknown>
+    : { readonly [K in TPlaceholders]: unknown };
+
+export interface ValidatedPartial<
+  Strings extends readonly string[],
+  Open extends string,
+  Close extends string,
+  Bound extends string
+> {
+  readonly strings: Strings;
+  readonly open: Open;
+  readonly close: Close;
+  readonly placeholders: ReadonlyArray<
+    Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>
+  >;
+  with(
+    vars: VariablesOf<Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>>
+  ): string;
+}
+
+export interface ValidatedSafePartial<
+  Strings extends readonly string[],
+  Open extends string,
+  Close extends string,
+  Bound extends string
+> {
+  readonly strings: Strings;
+  readonly open: Open;
+  readonly close: Close;
+  readonly placeholders: ReadonlyArray<
+    Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>
+  >;
+  with(
+    vars: VariablesOf<Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>>
+  ): ValidationResult;
+}
+
+export interface Validated<
+  Strings extends readonly string[],
+  Open extends string,
+  Close extends string
+> {
+  readonly strings: Strings;
+  readonly open: Open;
+  readonly close: Close;
+  readonly placeholders: ReadonlyArray<ExtractPlaceholders<Strings, Open, Close>>;
+  with(
+    vars: VariablesOf<ExtractPlaceholders<Strings, Open, Close>>
+  ): string;
+  partial<const Bound extends ExtractPlaceholders<Strings, Open, Close>>(
+    vars: { readonly [K in Bound]: string }
+  ): ValidatedPartial<Strings, Open, Close, Bound>;
+}
+
+export interface ValidatedSafe<
+  Strings extends readonly string[],
+  Open extends string,
+  Close extends string
+> {
+  readonly strings: Strings;
+  readonly open: Open;
+  readonly close: Close;
+  readonly placeholders: ReadonlyArray<ExtractPlaceholders<Strings, Open, Close>>;
+  with(
+    vars: VariablesOf<ExtractPlaceholders<Strings, Open, Close>>
+  ): ValidationResult;
+  partial<const Bound extends ExtractPlaceholders<Strings, Open, Close>>(
+    vars: { readonly [K in Bound]: string }
+  ): ValidatedSafePartial<Strings, Open, Close, Bound>;
+}
+
 export interface PartialApplied<
   Strings extends readonly string[],
   Open extends string,
@@ -60,6 +146,20 @@ export interface PartialApplied<
   with(
     vars: VariablesOf<Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>>
   ): string;
+  validate<
+    TOutput extends AcceptableSchemaOutput<
+      Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>
+    >
+  >(
+    schema: SchemaLike<TOutput>
+  ): ValidatedPartial<Strings, Open, Close, Bound>;
+  validateSafe<
+    TOutput extends AcceptableSchemaOutput<
+      Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>
+    >
+  >(
+    schema: SchemaLike<TOutput>
+  ): ValidatedSafePartial<Strings, Open, Close, Bound>;
 }
 
 export interface Compiled<
@@ -77,4 +177,14 @@ export interface Compiled<
   partial<const Bound extends ExtractPlaceholders<Strings, Open, Close>>(
     vars: { readonly [K in Bound]: string }
   ): PartialApplied<Strings, Open, Close, Bound>;
+  validate<
+    TOutput extends AcceptableSchemaOutput<ExtractPlaceholders<Strings, Open, Close>>
+  >(
+    schema: SchemaLike<TOutput>
+  ): Validated<Strings, Open, Close>;
+  validateSafe<
+    TOutput extends AcceptableSchemaOutput<ExtractPlaceholders<Strings, Open, Close>>
+  >(
+    schema: SchemaLike<TOutput>
+  ): ValidatedSafe<Strings, Open, Close>;
 }
