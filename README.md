@@ -1,7 +1,6 @@
 # tprompt
 
 Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
-
 tprompt is **variables only, no template logic** — no `{{#if}}`, no loops, no DSL. If you need conditionals or iteration, build them in TypeScript and pass strings.
 
 ## Quick start
