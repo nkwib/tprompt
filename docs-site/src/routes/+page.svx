@@ -16,7 +16,7 @@ Rename `{{usrName}}` to `{{userName}}` in the snippet to clear the error.
 
 ## Documentation
 
-- [`CONTEXT.md`](https://github.com/gabrielmagno/promptkit/blob/main/CONTEXT.md) — canonical glossary
-- [ADR-0001](https://github.com/gabrielmagno/promptkit/blob/main/docs/adr/0001-default-delimiter.md) — why <code>{'{{var}}'}</code>
-- [ADR-0002](https://github.com/gabrielmagno/promptkit/blob/main/docs/adr/0002-pluggable-parser-architecture.md) — pluggable-parser architecture
-- [ADR-0003](https://github.com/gabrielmagno/promptkit/blob/main/docs/adr/0003-esm-cjs-interop-boundary.md) — ESM-source dual-publish
+- [`CONTEXT.md`](https://github.com/nkwib/promptkit/blob/main/CONTEXT.md) — canonical glossary
+- [ADR-0001](https://github.com/nkwib/promptkit/blob/main/docs/adr/0001-default-delimiter.md) — why <code>{'{{var}}'}</code>
+- [ADR-0002](https://github.com/nkwib/promptkit/blob/main/docs/adr/0002-pluggable-parser-architecture.md) — pluggable-parser architecture
+- [ADR-0003](https://github.com/nkwib/promptkit/blob/main/docs/adr/0003-esm-cjs-interop-boundary.md) — ESM-source dual-publish
