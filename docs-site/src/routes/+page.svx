@@ -1,0 +1,20 @@
+# promptkit
+
+Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
+
+## Non-goals
+
+promptkit is **variables only**. No template logic — no <code>{'{{#if}}'}</code>, no loops, no DSL. If you need conditionals or iteration, build them in TypeScript and pass strings.
+
+## Demo
+
+The before/after demo on a real Vercel AI SDK call lands in issue 010. For now: TS Playground link goes here.
+
+[TS Playground demo (coming soon — issue 010)](https://www.typescriptlang.org/play)
+
+## Documentation
+
+- [`CONTEXT.md`](https://github.com/gabrielmagno/promptkit/blob/main/CONTEXT.md) — canonical glossary
+- [ADR-0001](https://github.com/gabrielmagno/promptkit/blob/main/docs/adr/0001-default-delimiter.md) — why <code>{'{{var}}'}</code>
+- [ADR-0002](https://github.com/gabrielmagno/promptkit/blob/main/docs/adr/0002-pluggable-parser-architecture.md) — pluggable-parser architecture
+- [ADR-0003](https://github.com/gabrielmagno/promptkit/blob/main/docs/adr/0003-esm-cjs-interop-boundary.md) — ESM-source dual-publish
