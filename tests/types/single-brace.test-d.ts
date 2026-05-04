@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it } from 'vitest';
 import { prompt } from '../../src/single-brace.js';
 
-describe('promptkit/single-brace — type inference', () => {
+describe('tprompt/single-brace — type inference', () => {
   it('extracts {var} placeholders into the variables-object type', () => {
     const t = prompt('Hi {name}');
     expectTypeOf(t.with).parameter(0).toEqualTypeOf<{ readonly name: string }>();

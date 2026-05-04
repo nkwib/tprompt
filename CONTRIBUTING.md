@@ -1,4 +1,4 @@
-# Contributing to promptkit
+# Contributing to tprompt
 
 ## Getting started
 

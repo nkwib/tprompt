@@ -1,0 +1,39 @@
+---
+title: 'tprompt · Architecture decisions'
+---
+
+<svelte:head>
+  <title>tprompt · Architecture decisions</title>
+  <meta
+    name="description"
+    content="The three architecture decision records that fix the shape of tprompt: default delimiter, pluggable-parser architecture, and ESM/CJS interop boundary."
+  />
+</svelte:head>
+
+# Architecture decisions
+
+Three records pin the public shape of the library. They are referenced from the README and inline source comments, and they are the document a contributor reads before changing anything load-bearing.
+
+## ADR-0001 · Default delimiter is `{{var}}`
+
+[Read the full ADR →](/adr/0001-default-delimiter)
+
+Why double-brace, not single-brace, not `${...}`, not `$var`. The decision turns on three weights, in order:
+
+1. JSON-output collision safety — single-brace silently matches identifiers inside JSON examples.
+2. Convention alignment — LangChain, BAML, OpenAI's prompt cookbook, Anthropic's prompt library all use `{{var}}`.
+3. Reader-side discoverability — a `{{usrName}}` typo in the IDE reads as a typed prompt-template error to anyone who has touched a prompt library.
+
+## ADR-0002 · Pluggable-parser architecture
+
+[Read the full ADR →](/adr/0002-pluggable-parser-architecture)
+
+Three coordinated layers — a single `Compiled<Strings, Open, Close>` generic, the `makePromptTag({ open, close })` factory, and pre-applied subpath exports for the common cases. Subpath namespace is **reserved for behaviour variants only** — no `tprompt/compat`, no module-system flavours.
+
+Includes the implementation note on why this is a function call (`prompt('...')`) and not a tagged template — TypeScript does not preserve literal types in tagged-template `strings` inference (microsoft/TypeScript#47660, open since 2021).
+
+## ADR-0003 · ESM/CJS interop boundary
+
+[Read the full ADR →](/adr/0003-esm-cjs-interop-boundary)
+
+ESM source, dual-publish, conditional exports. The five non-negotiable invariants the boundary depends on — and what each of them is buying. Adding any of `{module-level cache, instanceof check, Symbol registry, top-level await, module-init work}` is a structural change, not a feature change.

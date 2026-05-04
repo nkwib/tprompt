@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-// Generates a TS Playground URL for the promptkit "typo becomes a tsc error"
+// Generates a TS Playground URL for the tprompt "typo becomes a tsc error"
 // demo. The Playground encodes its snippet via lz-string with a URL-safe
 // alphabet (`compressToEncodedURIComponent`). Run with: `node scripts/generate-playground-url.mjs`.
 
 import lzString from 'lz-string';
 const { compressToEncodedURIComponent } = lzString;
 
-const snippet = `// promptkit type-only stub for TS Playground.
-// In a real project you would write \`import { prompt } from 'promptkit'\` —
+const snippet = `// tprompt type-only stub for TS Playground.
+// In a real project you would write \`import { prompt } from 'tprompt'\` —
 // this stub is inlined here so the Playground link works without npm.
 
 type Letter =

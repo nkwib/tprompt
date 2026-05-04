@@ -1,19 +1,19 @@
-# promptkit
+# tprompt
 
 Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
 
-promptkit is **variables only, no template logic** — no `{{#if}}`, no loops, no DSL. If you need conditionals or iteration, build them in TypeScript and pass strings.
+tprompt is **variables only, no template logic** — no `{{#if}}`, no loops, no DSL. If you need conditionals or iteration, build them in TypeScript and pass strings.
 
 ## Quick start
 
 ```sh
-pnpm add promptkit
+pnpm add tprompt
 # Optional, only if you want runtime validation:
 pnpm add zod
 ```
 
 ```ts
-import { prompt } from 'promptkit';
+import { prompt } from 'tprompt';
 
 const greet = prompt('Hello, {{name}}!');
 
@@ -25,7 +25,7 @@ greet.with({ nme: 'world' });
 //          ^^^^ Property 'name' is missing in type
 ```
 
-[**Try it in the TS Playground**](https://www.typescriptlang.org/play?#code=PTAEAcCcHsFtwC4GsCWDQIJ7gKYFpoA7AG01AGcEBXAI1ADNpJQAVAZVAAViBDTAcxhVCAEwB0AKBCgAkoVA9QkHD2IQYAKxwBjdJmhVQAdwPERxyGhygABinhN0Ab3VxEoAL4MYsUAHIoN2Q0PxtQQBQCKTAEAAsUcgpqOnjQFBI0nHMYnGUKaAxsrl4BIVFQYjSkYyYkBKM0GIN0QnBYSQksXFAAGRwEBBzQAF4JUFAAH38ePwn-GhnJv20F-xEVvxx1+nX+dZj1lHWNP1HZvyR14nXYdcJ16HXwdYBHdch18nWEE7HFqnWAG7rIzrAAe60w6wAXj8zgBBdYAIXWAGF1gARdYAUXWADF1gBxdYACXWMnWAClYYsANLrbrrACy6wAcusAPLrTjrACK6wASus2OsWNT-ABVdYANXWAHV1gANdYATXWAC11gB9PwAbg62GsMhEKJiPGYQx6fQGzEWAAY-OM-ABGB1+ABMroAzK6ACyugCsroAbK6AOyugAcroAnLr9V0jSweChiAAeDg4UEDUQJSiWQj8AB8w1OGazOBz-hmAH4MJAqDhTgAuUBl7MiBI2AAkTiNJrNHh7aXog35HjCtcTybT-OLLfoqnIOD1nUN5CN6dAmfbuYQ+aLJbGbYrHdsPd6-Ryg6cw9H49Ak5ESZTqdnoHni+X8esWKzkB4ujcABOCNGYOTkJu24nru+4ADSgHC2jaFu5aVnmaT8MMoCEDgAI5MWIxHihO5nk46EFh4ThOEOhAjswUoeIxNF0aA-I4JQ46nGMk7riIqZSsWUGVnuDZcWMD6gL+e4AQgQHaCB0BgZAEFsZQ8GIchkwCWJYwtlJ-6Abw8mgSI4GvuxCDqUhhZiS2GkrgaoBSmaKA8DQxDsey9CppwxHQYk+4EacADanAALp+ZWwU4XhkARbWbHaEwfHkfw8Exfh76gC4yg8CIRCkKAwU0qk8jhS2qWeHqaTWgu8mgCibgppkkGoaeqXFk4pz1LEAAUAJmuQLbOZYbkeeQXmpvpMlyQpSkQWwhaFgAlBVe4YXqHgSKZ2i8Lk9DCLoKBEK48AIKmSWEJQraRe160FoWvUDPAvADC2bCrQ1TUeXxi16lEoCAACkwMg6DYPgxDkNQ9DMMgwDLCFEYmT8DgLbKIQPCwNYVFUOQkAspjOCMRg+Q40u+OE8TNA4MQ0BGCToC7SozCxNYOQwJAkjSLDPO83zfMSBIl3XYIOB9FhgRnb1px+MSNO0-BZMU1jjEAISgMqBjMOAvDyCkVE6zwhAsCgV5eL1tPaKoqPZU4lvW4xy1iCcy3-aLfRiD1MS9V1Yy4zkBNYy2fiqCg8l+PB0iAAmEXAwLgkBYP4uPK5sqQJLA8TkBhpUYAa8F+P7KczPl7HYdA6CZvECCnIbxum5AweBBHpz2x5wcVng4rChIHiuxIQA) — rename `{{usrName}}` back to `{{userName}}` to clear the error.
+[**Try it in the TS Playground**](https://www.typescriptlang.org/play/#code/PTAEBcAcCcHsFtLggT0gUwLSwHYBsVQBncAVwCNQAzWaUAFQGVQAFPAQxQHM5ScATAHQAoEKACSOUO1DR07PKBiwAVugDGyFLFKgA7jrz990AJbh0oAAanEtZAG8lcRMgC+1F6ADkUF0m8rUEAUAlEwcAALUyJiMkpo0FN8JPRjCPQ5YlgIdNYObl4BUDwkgGt9WlKYvXMInWQcSHgRYXA0SwAZdHALOgBeYVBQAB8fdm8Rn3IJ0e91GZ9+Be90ZaplrmWI5dNllW9Bye9S5bxl+GWcZdhlyGWAR2XoZaJl8AOh2dJlgDdlvWWAA9lihlgAvD5HACCywAQssAMLLAAiywAossAGLLADiywAEstxMsAFKQ2YAaWWHWWAFllgA5ZYAeWWLGWAEVlgAlZaMZb0ck+ACqywAassAOrLAAaywAmssAFrLAD63gA3K12hJ+AiIux+qAuj0MkcAAzeYbeACMVu8ACZ7QBme0AFntAFZ7QA2e0AdntAA57QBOTXajC6+jsUx4AA8zHQgIsAhiJDMOC4AD5QAMhkmU+g0z4JgB+CDQUjoQ4ALlAhdT-BiVgAJA5xHqDdA3O2klQzdy3EEK52Y3H49zc-WqAoiOgtW0o+IiJ3E6Bk030+BMzm84dG8Xm9Z2yber2HP3B8PQKP+OOE1PQDO5wvI5Y0SnoOxNGwf+g6iMDIiHXTcj23XcABpQChdR1A3IsSwzJIuDzUAcHQH4MlzfMGwQrcTwcZCszcBwHD7HABzoMU3FoiiqNAbl0BIYdDiGUdV34eMxVzMCSx3as2KGW9QE-Hcf3AP91AA2AgOgECmJIaDYPg0YeKEoZ6zE79fw4aTAP4YDJ2Y8BlLg7MhPrFTFx1MVDVMdhyDwZjmSoeMWHw8DYl3HDDgAbRYABdTySz8jCsOgYKKyY9RaC44iuGg8LsOfUAnDkdh+FwAhQD8ilEikIL6wS0A3C1JJelnaTQARBBIDjVJQMQ48EtzBxDhqSIAAofkNIh6zssxHOcohXPjbSJKkmS5JAxhs2zABKYqdxQrU3GEQz1A4TIqD4TRTFwZw6vAeNYpwEg8L4lqVqzbMuosRAOAsetGCWmq6oari5q1MJQEAAFIAcBoHgZB0GwfBiHIcB376FyPRUi4dB6zkHB2HgSwyNIIhoAZNH0FoiBskx+ccbxgnyHQPBYD0QnQC2+Q6EiSwMjgaARDEKHOa57nueEYQzounh0G6NDlFcLrDm8fFKap6DidJ9HaIAQlAeUdDoSAOCkBIyM19gcHoUwMgJrqqfUBQkbShwzYt2iFsEA4Fp+oXukETqIi69qhixjJcfR+tvAUUxpO8aCxEABMJWDgDBoDaHwsYV1ZEhieBoiIFCCtQDBoO8H3E4mLLmPQ2BkGTaJwEOPWDaN6AA+UUPDht5yA+LTBhX5YQ3Cd4QgA) — rename `{{usrName}}` back to `{{userName}}` to clear the error.
 
 ## Multi-turn: `.partial({...})`
 
@@ -45,7 +45,7 @@ The default `prompt` is `makePromptTag({ open: '{{', close: '}}' })`. The factor
 
 ```ts
 // Bring your own delimiter:
-import { makePromptTag } from 'promptkit';
+import { makePromptTag } from 'tprompt';
 
 const angle = makePromptTag({ open: '<<', close: '>>' });
 angle('Hi <<name>>').with({ name: 'world' });
@@ -54,7 +54,7 @@ angle('Hi <<name>>').with({ name: 'world' });
 
 ```ts
 // Pre-applied {var} variant:
-import { prompt } from 'promptkit/single-brace';
+import { prompt } from 'tprompt/single-brace';
 
 prompt('Hi {name}').with({ name: 'world' });
 // "Hi world"
@@ -64,7 +64,7 @@ prompt('Hi {name}').with({ name: 'world' });
 
 ## ESM / CJS
 
-Transparent — the same `import` (or `require`) of `'promptkit'` resolves to the right bytes per environment via conditional exports. There is no `promptkit/compat` subpath; module-system interop is handled invisibly. See [ADR-0003](./docs/adr/0003-esm-cjs-interop-boundary.md).
+Transparent — the same `import` (or `require`) of `'tprompt'` resolves to the right bytes per environment via conditional exports. There is no `tprompt/compat` subpath; module-system interop is handled invisibly. See [ADR-0003](./docs/adr/0003-esm-cjs-interop-boundary.md).
 
 `engines.node` is `>= 20`. `sideEffects: false` is honoured by all modern bundlers (Vite, esbuild, webpack 5+, Rollup) — the 2KB pitch holds at consumer level.
 
@@ -97,11 +97,11 @@ if (result.ok) {
 
 These two methods are the hardest API to explain — read the section above slowly. The default is `.validate()` (throws). Reach for `.validateSafe()` only when the failure is a value you want to inspect. Mixing them produces dead code; pick one per call site.
 
-`zod` is an **optional** peer dependency — promptkit accepts any object with `.parse(value)` and `.safeParse(value)` shape, so Valibot, ArkType, or your own validator all work. The library never imports `zod` at module load; the validation surface is structural.
+`zod` is an **optional** peer dependency — tprompt accepts any object with `.parse(value)` and `.safeParse(value)` shape, so Valibot, ArkType, or your own validator all work. The library never imports `zod` at module load; the validation surface is structural.
 
 ## Non-goals
 
-promptkit is **variables only**. No template logic, no expression placeholders, no DSL.
+tprompt is **variables only**. No template logic, no expression placeholders, no DSL.
 
 - No `{{#if}}`, `{{#each}}`, conditionals, or loops.
 - No expressions inside placeholders (`{{ user.name }}` is not a placeholder).
