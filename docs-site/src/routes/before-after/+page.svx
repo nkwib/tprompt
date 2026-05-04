@@ -1,0 +1,71 @@
+---
+title: 'promptkit — before / after with the Vercel AI SDK'
+---
+
+# Before / after — Vercel AI SDK
+
+A real multi-variable system prompt: `{{userName}}`, `{{planTier}}`, `{{locale}}`. Same data flow, same model call. The only difference is when the typo gets caught.
+
+## Before — vanilla string template
+
+```ts
+import { generateText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+const userName = 'alice';
+const planTier = 'pro';
+const locale = 'en-US';
+
+// Typo intended to be {{userName}} — silently ships to the model.
+const system = 'You are a support agent for {{usrName}} on plan {{planTier}}, locale {{locale}}.'
+  .replace('{{userName}}', userName)
+  .replace('{{planTier}}', planTier)
+  .replace('{{locale}}', locale);
+
+const { text } = await generateText({
+  model: openai('gpt-4o-mini'),
+  system,
+  prompt: 'How do I upgrade my plan?'
+});
+
+// system is:
+// "You are a support agent for {{usrName}} on plan pro, locale en-US."
+//                                  ^^^^^^^ leaks to the model
+```
+
+The `replace` for `{{userName}}` doesn't match anything (the template has `{{usrName}}`), so the literal `{{usrName}}` reaches the model. The runtime works; the prompt is silently broken.
+
+## After — promptkit
+
+```ts
+import { generateText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import { prompt } from 'promptkit';
+
+const supportSystem = prompt(
+  'You are a support agent for {{usrName}} on plan {{planTier}}, locale {{locale}}.'
+);
+
+const { text } = await generateText({
+  model: openai('gpt-4o-mini'),
+  system: supportSystem.with({
+    userName: 'alice',
+    //  ^^^^^^^^ TS error: Property 'usrName' is missing in type
+    //           '{ readonly userName: string; readonly planTier: string;
+    //             readonly locale: string; }', but the call expects
+    //           '{ readonly usrName: string; readonly planTier: string;
+    //             readonly locale: string; }'.
+    planTier: 'pro',
+    locale: 'en-US'
+  }),
+  prompt: 'How do I upgrade my plan?'
+});
+```
+
+`tsc` rejects this file before `node` ever runs. Either fix the template (`{{userName}}`) or fix the call site (`usrName: 'alice'`) — the typo cannot land in production.
+
+## Try it
+
+[**Open the after-snippet in the TS Playground**](https://www.typescriptlang.org/play?#code=PTAEAcCcHsFtwC4GsCWDQIJ7gKYFpoA7AG01AGcEBXAI1ADNpJQAVAZVAAViBDTAcxhVCAEwB0AKBCgAkoVA9QkHD2IQYAKxwBjdJmhVQAdwPERxyGhygABinhN0Ab3VxEoAL4MYsUAHIoN2Q0PxtQQBQCKTAEAAsUcgpqOnjQFBI0nHMYnGUKaAxsrl4BIVFQYjSkYyYkBKM0GIN0QnBYSQksXFAAGRwEBBzQAF4JUFAAH38ePwn-GhnJv20F-xEVvxx1+nX+dZj1lHWNP1HZvyR14nXYdcJ16HXwdYBHdch18nWEE7HFqnWAG7rIzrAAe60w6wAXj8zgBBdYAIXWAGF1gARdYAUXWADF1gBxdYACXWMnWAClYYsANLrbrrACy6wAcusAPLrTjrACK6wASus2OsWNT-ABVdYANXWAHV1gANdYATXWAC11gB9PwAbg62GsMhEKJiPGYQx6fQGzEWAAY-OM-ABGB1+ABMroAzK6ACyugCsroAbK6AOyugAcroAnLr9V0jSweChiAAeDg4UEDUQJSiWQj8AB8w1OGazOBz-hmAH4MJAqDhTgAuUBl7MiBI2AAkTiNJrNHh7aXog35HjCtcTybT-OLLfoqnIOD1nUN5CN6dAmfbuYQ+aLJbGbYrHdsPd6-Ryg6cw9H49Ak5ESZTqdnoHni+X8esWKzkB4ujcABOCNGYOTkJu24nru+4ADSgHC2jaFu5aVnmaT8MMoCEDgAI5MWIxHihO5nk46EFh4ThOEOhAjswUoeIxNF0aA-I4JQ46nGMk7riIqZSsWUGVnuDZcWMD6gL+e4AQgQHaCB0BgZAEFsZQ8GIchkwCWJYwtlJ-6Abw8mgSI4GvuxCDqUhhZiS2GkrgaoBSmaKA8DQxDsey9CppwxHQYk+4EacADanAALp+ZWwU4XhkARbWbHaEwfHkfw8Exfh76gC4yg8CIRCkKAwU0qk8jhS2qWeHqaTWgu8mgCibgppkkGoaeqXFk4pz1LEAAUAJmuQLbOZYbkeeQXmpvpMlyQpSkQWwhaFgAlBVe4YXqHgSKZ2i8Lk9DCLoKBEK48AIKmSWEJQraRe160FoWvUDPAvADC2bCrQ1TUeXxi16lEoCAACkwMg6DYPgxDkNQ9DMMgwDLCFEYmT8DgLbKIQPCwNYVFUOQkAspjOCMRg+Q40u+OE8TNA4MQ0BGCToC7SozCxNYOQwJAkjSLDPO83zfMSBIl3XYIOB9FhgRnb1px+MSNO0-BZMU1jjEAISgMqBjMOAvDyCkVE6zwhAsCgV5eL1tPaKoqPZU4lvW4xy1iCcy3-aLfRiD1MS9V1Yy4zkBNYy2fiqCg8l+PB0iAAmEXAwLgkBYP4uPK5sqQJLA8TkBhpUYAa8F+P7KczPl7HYdA6CZvECCnIbxum5AweBBHpz2x5wcVng4rChIHiuxIQA)
+
+Rename the `{{usrName}}` placeholder back to `{{userName}}` to clear the error.
