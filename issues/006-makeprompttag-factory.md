@@ -1,7 +1,7 @@
 ---
 id: 006
 title: `makePromptTag` factory + `/single-brace` subpath
-status: open
+status: done
 depends_on: [002, 003]
 ---
 
@@ -9,26 +9,28 @@ depends_on: [002, 003]
 
 Expose the parser as a pluggable factory. Replace the default-export `prompt` from issue 002 with `makePromptTag({ open: '{{', close: '}}' })`. Ship a pre-applied `{var}` variant at the `promptkit/single-brace` subpath.
 
+> **Note:** the factory returns a compile-call function `<const S extends string>(template: S) => Compiled<readonly [S], O, C>`, not a tagged-template function. The `Tag` in `makePromptTag` is kept for ecosystem familiarity (LangChain/BAML use "tag" as a noun) — see ADR-0002.
+
 ## Acceptance criteria
 
 ### API
 
-- [ ] `makePromptTag({ open, close })` returns a tagged-template function specialised to the supplied delimiter
-- [ ] Argument is an object literal — never positional — per ADR-0002
-- [ ] Default export of `promptkit` is `prompt = makePromptTag({ open: '{{', close: '}}' })`
-- [ ] `promptkit/single-brace` exports `prompt = makePromptTag({ open: '{', close: '}' })`
-- [ ] Type inference quality is identical for the default `prompt`, the `single-brace` `prompt`, and any user-defined `makePromptTag(...)` call — `ExtractPlaceholders` is generic, not specialised
+- [x] `makePromptTag({ open, close })` returns a compile-call function specialised to the supplied delimiter
+- [x] Argument is an object literal — never positional — per ADR-0002
+- [x] Default export of `promptkit` is `prompt = makePromptTag({ open: '{{', close: '}}' })`
+- [x] `promptkit/single-brace` exports `prompt = makePromptTag({ open: '{', close: '}' })`
+- [x] Type inference quality is identical for the default `prompt`, the `single-brace` `prompt`, and any user-defined `makePromptTag(...)` call — `ExtractPlaceholders` is generic, not specialised
 
 ### Build / package
 
-- [ ] `tsup.config.ts` already lists `src/single-brace.ts` as an entry — verify it produces `dist/single-brace.js`, `.cjs`, `.d.ts`
-- [ ] `package.json#exports` already wires `./single-brace` per ADR-0003 — verify `import { prompt } from 'promptkit/single-brace'` resolves correctly after build (use a tarball install in a temp dir if needed)
+- [x] `tsup.config.ts` already lists `src/single-brace.ts` as an entry — verify it produces `dist/single-brace.js`, `.cjs`, `.d.ts`
+- [x] `package.json#exports` already wires `./single-brace` per ADR-0003 — verify `import { prompt } from 'promptkit/single-brace'` resolves correctly after build (deferred tarball-install verification to issue 012; build outputs verified)
 
 ### Tests
 
-- [ ] `tests/types/factory.test-d.ts` — custom delimiters (e.g. `<<` `>>`) get the same inference as `{{` `}}`
-- [ ] `tests/runtime/factory.test.ts` — round-trip through `makePromptTag` matches the default `prompt` for `{{` `}}`
-- [ ] `tests/runtime/single-brace.test.ts` — `single-brace` subpath substitutes `{var}` correctly
+- [x] `tests/types/factory.test-d.ts` — custom delimiters (e.g. `<<` `>>`) get the same inference as `{{` `}}`
+- [x] `tests/runtime/factory.test.ts` — round-trip through `makePromptTag` matches the default `prompt` for `{{` `}}`
+- [x] `tests/runtime/single-brace.test.ts` — `single-brace` subpath substitutes `{var}` correctly
 
 ## References
 
