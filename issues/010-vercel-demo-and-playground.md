@@ -1,7 +1,7 @@
 ---
 id: 010
 title: Vercel AI SDK before/after demo + TS Playground link
-status: open
+status: done
 depends_on: [009]
 ---
 
@@ -13,17 +13,17 @@ The headline demo and the launch-surface wiring. Build the side-by-side Vercel A
 
 ### Demo
 
-- [ ] `docs-site/src/routes/before-after/+page.svelte` (or `.md` via MDsveX) renders the side-by-side
-- [ ] Real multi-variable system prompt: at minimum `userName`, `planTier`, `locale`
-- [ ] "Before" panel: vanilla string-template version with a `{{usrName}}` typo, showing the runtime output that would have shipped to the model
-- [ ] "After" panel: promptkit version with the same typo, showing `tsc` catching it (screenshot of the error or live `tsc` output embedded as a code block)
+- [x] `docs-site/src/routes/before-after/+page.svx` renders the side-by-side
+- [x] Real multi-variable system prompt: `userName`, `planTier`, `locale`
+- [x] "Before" panel: vanilla string-template version with a `{{usrName}}` typo, showing the runtime output that would have shipped to the model
+- [x] "After" panel: promptkit version with the same typo, with the `tsc` error embedded as a code block
 
 ### TS Playground
 
-- [ ] Generate a TS Playground URL encoding the "after" snippet such that opening the URL shows the typo-becomes-error in the TS Playground
-- [ ] Update `package.json#homepage` to that URL
-- [ ] Add a TS Playground link in the README quick-start section
-- [ ] Update the CLI placeholder from issue 008 with the real URL
+- [x] Generate a TS Playground URL encoding the "after" snippet such that opening the URL shows the typo-becomes-error in the TS Playground (`scripts/generate-playground-url.mjs`, uses `lz-string`)
+- [x] Update `package.json#homepage` to that URL
+- [x] Add a TS Playground link in the README quick-start section
+- [x] Update the CLI placeholder from issue 008 with the real URL
 
 ## References
 
