@@ -1,7 +1,7 @@
 ---
 id: 008
 title: `npx promptkit init` scaffold CLI
-status: open
+status: done
 depends_on: [006]
 ---
 
@@ -11,13 +11,13 @@ Add a small CLI that scaffolds a `prompts/` directory in the user's project with
 
 ## Acceptance criteria
 
-- [ ] `bin` field in `package.json` points to `dist/cli.cjs` (CLI in CJS so the shebang script is broadly executable)
-- [ ] `src/cli.ts` reads `process.argv`, supports the `init` subcommand
-- [ ] `init` creates `prompts/example.ts` in the current working directory containing a working ``prompt`Hello, {{name}}` `` example with a `.with({...})` call demonstrating the typed surface
-- [ ] CLI prints the TS Playground URL to stdout when done — placeholder for now (`// TODO(010): fill TS Playground URL`); issue 010 fills it in
-- [ ] No new runtime dependencies — argv parsing via Node's `node:util#parseArgs` or hand-rolled
-- [ ] `tsup.config.ts` updated to include `src/cli.ts` as a CJS-only entry with shebang
-- [ ] Tests: invoke the CLI in a temp dir (e.g. via `node ./dist/cli.cjs init`), verify `prompts/example.ts` is created with expected content
+- [x] `bin` field in `package.json` points to `dist/cli.cjs` (CLI in CJS so the shebang script is broadly executable)
+- [x] `src/cli.ts` reads `process.argv`, supports the `init` subcommand
+- [x] `init` creates `prompts/example.ts` in the current working directory containing a working `prompt('Hello, {{name}}!')` example with a `.with({...})` call demonstrating the typed surface
+- [x] CLI prints the TS Playground URL to stdout when done — placeholder for now (`// TODO(010): fill TS Playground URL`); issue 010 fills it in
+- [x] No new runtime dependencies — argv parsing via Node's `node:util#parseArgs`
+- [x] `tsup.config.ts` updated to include `src/cli.ts` as a CJS-only entry with shebang
+- [x] Tests: invoke the CLI in a temp dir (e.g. via `node ./dist/cli.cjs init`), verify `prompts/example.ts` is created with expected content
 
 ## References
 

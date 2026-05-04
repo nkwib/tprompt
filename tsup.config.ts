@@ -1,13 +1,27 @@
 import { defineConfig } from 'tsup';
 
-export default defineConfig({
-  entry: ['src/index.ts', 'src/single-brace.ts'],
-  format: ['esm', 'cjs'],
-  dts: true,
-  clean: true,
-  sourcemap: true,
-  splitting: false,
-  treeshake: true,
-  minify: false,
-  target: 'node20'
-});
+export default defineConfig([
+  {
+    entry: ['src/index.ts', 'src/single-brace.ts'],
+    format: ['esm', 'cjs'],
+    dts: true,
+    clean: true,
+    sourcemap: true,
+    splitting: false,
+    treeshake: true,
+    minify: false,
+    target: 'node20'
+  },
+  {
+    entry: ['src/cli.ts'],
+    format: ['cjs'],
+    dts: false,
+    clean: false,
+    sourcemap: false,
+    splitting: false,
+    treeshake: true,
+    minify: false,
+    target: 'node20',
+    banner: { js: '#!/usr/bin/env node' }
+  }
+]);
