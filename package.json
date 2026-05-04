@@ -9,14 +9,14 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./single-brace": {
+      "types": "./dist/single-brace.d.ts",
       "import": "./dist/single-brace.js",
-      "require": "./dist/single-brace.cjs",
-      "types": "./dist/single-brace.d.ts"
+      "require": "./dist/single-brace.cjs"
     },
     "./package.json": "./package.json"
   },
