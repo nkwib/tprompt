@@ -1,6 +1,6 @@
 # promptkit
 
-Type-safe prompt template library for TypeScript. A 2KB tagged-template primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
+Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
 
 > **Status:** under construction. See [`KICKOFF.md`](./KICKOFF.md) and [`issues/`](./issues) for the build plan.
 

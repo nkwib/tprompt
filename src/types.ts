@@ -24,20 +24,22 @@ type IsValidIdentifier<S extends string> = S extends `${IdentifierFirstChar}${in
 type ExtractFromSegment<
   S extends string,
   Open extends string,
-  Close extends string
+  Close extends string,
+  Acc extends string = never
 > = S extends `${string}${Open}${infer Var}${Close}${infer Rest}`
   ? IsValidIdentifier<Var> extends true
-    ? Var | ExtractFromSegment<Rest, Open, Close>
-    : ExtractFromSegment<Rest, Open, Close>
-  : never;
+    ? ExtractFromSegment<Rest, Open, Close, Acc | Var>
+    : ExtractFromSegment<Rest, Open, Close, Acc>
+  : Acc;
 
 export type ExtractPlaceholders<
   Strings extends readonly string[],
   Open extends string,
-  Close extends string
+  Close extends string,
+  Acc extends string = never
 > = Strings extends readonly [infer Head extends string, ...infer Tail extends readonly string[]]
-  ? ExtractFromSegment<Head, Open, Close> | ExtractPlaceholders<Tail, Open, Close>
-  : never;
+  ? ExtractPlaceholders<Tail, Open, Close, Acc | ExtractFromSegment<Head, Open, Close>>
+  : Acc;
 
 export type VariablesOf<P extends string> = [P] extends [never]
   ? Record<string, never>
@@ -52,4 +54,7 @@ export interface Compiled<
   readonly open: Open;
   readonly close: Close;
   readonly placeholders: ReadonlyArray<ExtractPlaceholders<Strings, Open, Close>>;
+  with(
+    vars: VariablesOf<ExtractPlaceholders<Strings, Open, Close>>
+  ): string;
 }

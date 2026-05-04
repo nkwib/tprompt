@@ -1,25 +1,32 @@
-import type { Compiled, ExtractPlaceholders } from './types.js';
-import { extractPlaceholders } from './parser.js';
+import type { Compiled, ExtractPlaceholders, VariablesOf } from './types.js';
+import { extractPlaceholders, renderTemplate } from './parser.js';
 
 export type { Compiled, ExtractPlaceholders, VariablesOf } from './types.js';
 
 const DEFAULT_OPEN = '{{';
 const DEFAULT_CLOSE = '}}';
 
-export function prompt<const Raw extends readonly string[]>(
-  strings: TemplateStringsArray & { readonly raw: Raw },
-  ..._values: never[]
-): Compiled<Raw, '{{', '}}'> {
-  const raw = strings.raw as unknown as Raw;
+export function prompt<const S extends string>(
+  template: S
+): Compiled<readonly [S], '{{', '}}'> {
+  const segments = [template] as unknown as readonly [S];
   const placeholders = extractPlaceholders(
-    strings.raw,
+    segments,
     DEFAULT_OPEN,
     DEFAULT_CLOSE
-  ) as ReadonlyArray<ExtractPlaceholders<Raw, '{{', '}}'>>;
+  ) as ReadonlyArray<ExtractPlaceholders<readonly [S], '{{', '}}'>>;
   return {
-    strings: raw,
+    strings: segments,
     open: '{{',
     close: '}}',
-    placeholders
+    placeholders,
+    with(vars: VariablesOf<ExtractPlaceholders<readonly [S], '{{', '}}'>>): string {
+      return renderTemplate(
+        segments,
+        DEFAULT_OPEN,
+        DEFAULT_CLOSE,
+        vars as Readonly<Record<string, unknown>>
+      );
+    }
   };
 }
