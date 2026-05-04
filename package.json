@@ -33,7 +33,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest run && pnpm test:cjs",
+    "test": "vitest run && pnpm build && pnpm test:cjs",
     "test:watch": "vitest",
     "test:types": "vitest --typecheck.only",
     "test:cjs": "node tests/cjs-smoke/test.cjs",
