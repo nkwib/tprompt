@@ -1,10 +1,54 @@
-import type { Compiled, ExtractPlaceholders, VariablesOf } from './types.js';
+import type {
+  Compiled,
+  ExtractPlaceholders,
+  PartialApplied,
+  VariablesOf
+} from './types.js';
 import { extractPlaceholders, renderTemplate } from './parser.js';
 
-export type { Compiled, ExtractPlaceholders, VariablesOf } from './types.js';
+export type {
+  Compiled,
+  ExtractPlaceholders,
+  PartialApplied,
+  VariablesOf
+} from './types.js';
 
 const DEFAULT_OPEN = '{{';
 const DEFAULT_CLOSE = '}}';
+
+type AnyVars = Readonly<Record<string, unknown>>;
+
+function makePartialApplied<
+  Strings extends readonly string[],
+  Open extends string,
+  Close extends string,
+  Bound extends string
+>(
+  segments: Strings,
+  open: Open,
+  close: Close,
+  bound: AnyVars
+): PartialApplied<Strings, Open, Close, Bound> {
+  const remaining = extractPlaceholders(segments, open, close).filter(
+    (p) => !(p in bound)
+  ) as unknown as ReadonlyArray<
+    Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>
+  >;
+  return {
+    strings: segments,
+    open,
+    close,
+    placeholders: remaining,
+    with(
+      vars: VariablesOf<Exclude<ExtractPlaceholders<Strings, Open, Close>, Bound>>
+    ): string {
+      return renderTemplate(segments, open, close, {
+        ...bound,
+        ...(vars as AnyVars)
+      });
+    }
+  };
+}
 
 export function prompt<const S extends string>(
   template: S
@@ -25,7 +69,17 @@ export function prompt<const S extends string>(
         segments,
         DEFAULT_OPEN,
         DEFAULT_CLOSE,
-        vars as Readonly<Record<string, unknown>>
+        vars as AnyVars
+      );
+    },
+    partial<const Bound extends ExtractPlaceholders<readonly [S], '{{', '}}'>>(
+      vars: { readonly [K in Bound]: string }
+    ): PartialApplied<readonly [S], '{{', '}}', Bound> {
+      return makePartialApplied<readonly [S], '{{', '}}', Bound>(
+        segments,
+        '{{',
+        '}}',
+        vars as AnyVars
       );
     }
   };

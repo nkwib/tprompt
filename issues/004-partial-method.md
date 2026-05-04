@@ -1,7 +1,7 @@
 ---
 id: 004
 title: `.partial({...})` for multi-turn (no composition)
-status: open
+status: done
 depends_on: [003]
 ---
 
@@ -13,19 +13,19 @@ Implement `.partial(vars)`: pre-binds a subset of placeholders, returns a new co
 
 ### Type level
 
-- [ ] `.partial(vars)` accepts a strict subset of the placeholder keys (NOT `Partial<Vars>`)
-- [ ] Return type narrows the placeholder set to the unbound keys
-- [ ] Return type does NOT have a `.partial` method — `.partial(...).partial(...)` is a compile error
-- [ ] Return type DOES have `.with`, `.validate`, `.validateSafe`
+- [x] `.partial(vars)` accepts a strict subset of the placeholder keys (NOT `Partial<Vars>`)
+- [x] Return type narrows the placeholder set to the unbound keys
+- [x] Return type does NOT have a `.partial` method — `.partial(...).partial(...)` is a compile error
+- [x] Return type DOES have `.with`, `.validate`, `.validateSafe` (`.with` lands in this issue; `.validate`/`.validateSafe` extend `PartialApplied` in issue 005)
 
 ### Runtime
 
-- [ ] Pre-binds the supplied keys; subsequent `.with(rest)` substitutes both the partial values and the rest
+- [x] Pre-binds the supplied keys; subsequent `.with(rest)` substitutes both the partial values and the rest
 
 ### Tests
 
-- [ ] `tests/types/partial-method.test-d.ts` — narrowed placeholder set; `.partial().partial()` is a type error; `.with` after `.partial` works
-- [ ] `tests/runtime/partial-method.test.ts` — partial values appear in `.with()` output
+- [x] `tests/types/partial-method.test-d.ts` — narrowed placeholder set; `.partial().partial()` is a type error; `.with` after `.partial` works
+- [x] `tests/runtime/partial-method.test.ts` — partial values appear in `.with()` output
 
 ## References
 
