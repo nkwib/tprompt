@@ -19,7 +19,7 @@ tprompt is **variables only, no template logic** — no `{'{{#if}}'}`, no loops,
 <h2 id="installation">Installation</h2>
 
 ```sh
-pnpm add tprompt
+pnpm add @nkwib/tprompt
 # Optional, only if you want runtime validation:
 pnpm add zod
 ```
@@ -29,7 +29,7 @@ pnpm add zod
 <h2 id="usage">Quick start</h2>
 
 ```ts
-import { prompt } from 'tprompt';
+import { prompt } from '@nkwib/tprompt';
 
 const greet = prompt('Hello, {{name}}!');
 
@@ -41,7 +41,7 @@ greet.with({ nme: 'world' });
 //          ^^^^ Property 'name' is missing in type
 ```
 
-[**Try it in the TS Playground →**](https://www.typescriptlang.org/play/#code/PTAEBcAcCcHsFtLggT0gUwLSwHYBsVQBncAVwCNQAzWaUAFQGVQAFPAQxQHM5ScATAHQAoEKACSOUO1DR07PKBiwAVugDGyFLFKgA7jrz990AJbh0oAAanEtZAG8lcRMgC+1F6ADkUF0m8rUEAUAlEwcAALUyJiMkpo0FN8JPRjCPQ5YlgIdNYObl4BUDwkgGt9WlKYvXMInWQcSHgRYXA0SwAZdHALOgBeYVBQAB8fdm8Rn3IJ0e91GZ9+Be90ZaplrmWI5dNllW9Bye9S5bxl+GWcZdhlyGWAR2XoZaJl8AOh2dJlgDdlvWWAA9lihlgAvD5HACCywAQssAMLLAAiywAossAGLLADiywAEstxMsAFKQ2YAaWWHWWAFllgA5ZYAeWWLGWAEVlgAlZaMZb0ck+ACqywAassAOrLAAaywAmssAFrLAD63gA3K12hJ+AiIux+qAuj0MkcAAzeYbeACMVu8ACZ7QBme0AFntAFZ7QA2e0AdntAA57QBOTXajC6+jsUx4AA8zHQgIsAhiJDMOC4AD5QAMhkmU+g0z4JgB+CDQUjoQ4ALlAhdT-BiVgAJA5xHqDdA3O2klQzdy3EEK52Y3H49zc-WqAoiOgtW0o+IiJ3E6Bk030+BMzm84dG8Xm9Z2yber2HP3B8PQKP+OOE1PQDO5wvI5Y0SnoOxNGwf+g6iMDIiHXTcj23XcABpQChdR1A3IsSwzJIuDzUAcHQH4MlzfMGwQrcTwcZCszcBwHD7HABzoMU3FoiiqNAbl0BIYdDiGUdV34eMxVzMCSx3as2KGW9QE-Hcf3AP91AA2AgOgECmJIaDYPg0YeKEoZ6zE79fw4aTAP4YDJ2Y8BlLg7MhPrFTFx1MVDVMdhyDwZjmSoeMWHw8DYl3HDDgAbRYABdTySz8jCsOgYKKyY9RaC44iuGg8LsOfUAnDkdh+FwAhQD8ilEikIL6wS0A3C1JJelnaTQARBBIDjVJQMQ48EtzBxDhqSIAAofkNIh6zssxHOcohXPjbSJKkmS5JAxhs2zABKYqdxQrU3GEQz1A4TIqD4TRTFwZw6vAeNYpwEg8L4lqVqzbMuosRAOAsetGCWmq6oari5q1MJQEAAFIAcBoHgZB0GwfBiHIcB376FyPRUi4dB6zkHB2HgSwyNIIhoAZNH0FoiBskx+ccbxgnyHQPBYD0QnQC2+Q6EiSwMjgaARDEKHOa57nueEYQzounh0G6NDlFcLrDm8fFKap6DidJ9HaIAQlAeUdDoSAOCkBIyM19gcHoUwMgJrqqfUBQkbShwzYt2iFsEA4Fp+oXukETqIi69qhixjJcfR+tvAUUxpO8aCxEABMJWDgDBoDaHwsYV1ZEhieBoiIFCCtQDBoO8H3E4mLLmPQ2BkGTaJwEOPWDaN6AA+UUPDht5yA+LTBhX5YQ3Cd4QgA) — rename `{'{{usrName}}'}` back to `{'{{userName}}'}` to clear the error.
+[**Try it in the TS Playground →**](https://www.typescriptlang.org/play/#code/PTAEBcAcCcHsFtLggT0gUwLSwHYBsVQBncAVwCNQAzWaUAFQGVQAFPAQxQHM5ScATAHQAoEKACSOUO1DR07PKBiwAVugDGyFLFKgA7jrz990AJbh0oAAanEtZAG8lcRMgC+1F6ADkAARwA1nqm5MBQLkjeVqCAKASiYOAAFqZExGSUKaCm+NnoxonocsSwEAWsHNy8AqB42QH6tAGpwUk6yDiQ8CLC4GiWADLo4BZ0ALzCoKAAPj7s3tM+5PMz3urLPvzr3uhbVFtcW4lbplsq3hML3gFbeFvwWzhbsFuQWwCOW9BbRFvg55MrUhbABuWz0WwAHlsUFsAF7-S4AQS2ACEtgBhLYAES2AFEtgAxLYAcS2AAktuItgApBErADSW36WwAslsAHJbADyWxYWwAilsAEpbRhbeh0nwAVS2ADUtgB1LYADS2AE0tgAtLYAfW8AG4en0JPx0Yl2GNQINhoVLgAGbxTbwARkd3gATG6AMxugAsboArG6AGxugDsboAHG6AJwGo0YE30dimPAAHmY6AhFgEqRIZhwXAAfKBxpNM9n0LmfPMAPwQaCkdAXABcoArOf4qSsABIHOJTeboG4+9kqLahW5ovWB8nU2mhSW21QFER0IbeonxEQBxnQFnO3nwAXi6WLh2q13rH3rSMRw4xxOp6AZ-w5+nF6Bl6v1wnLLjs2gdhNDYYD0ESWAjEKIg9wPS8jxPAAaUBEXUdR90rat82yLhS1AHB0GBQoSzLdsMMPa8HGwws3AcBxRxwcc6FlNxWIYpjQCFdASCnC5JhnHd+DTWUSzg6tjybPjJhfUAAOPYDwFA9RwMg-hoIXbjwGQ1D0JmESpMmNs5KAkCOGUiCoOgGCuJIbS0KLKS2x0jdjVlC1THYcg8G4rkqDTFhyPgtITxIi4AG0WAAXUC6swoIojoGi+suPUWghOorhkPi4iv1AJw5HYfhcAIUAwvpLIpCitsMtANxDWyEYV2U0B0QQSBUzyWDMKvDKSwcC4WkSAAKYELSINs3LMTzvKIXy02MhSlJUyyYMYIsiwASmq48cMNNxhDU9QOCKKg+E0UxcGcNrwDTVKcBIMixJ6nbCyLIaLEQDgLDbRgtpatqOqEtbDXiUBAABSCHIah6GYdhuH4YRxHIdB+gyj0PIuHQNs5Bwdh4EsOjSCIaB2Tx9BWIgEpCbXEmyYp8h0DwWA9Ep0AjvkOgkksQo4GgEQxCRwWheF4XhGEO6Hp4dAhjw5RXCGi5vDJRmmeQ6nafx1iAEJQDVHQ6EgDgpEyOjDfYHB6FMQoKaGpn1AULG8ocO2HdYjbBHODaQaloZBEGob+smInClJ-G228BRTGU7xkLEQAEwlYOAMGgXofCJjWdiyVJ4BSIgcIq1AMGQ7xg4z+Yiu4-DYGQLMUnAC4zYtq3oHD5QY4uF3vPDqtMClMVhDcL3hCAA) — rename `{'{{usrName}}'}` back to `{'{{userName}}'}` to clear the error.
 
 <h2 id="partial">Multi-turn — <code>.partial(&lbrace;...&rbrace;)</code></h2>
 
@@ -94,7 +94,7 @@ The default `prompt` is `makePromptTag({ open: '{{', close: '}}' })`. The factor
 
 ```ts
 // Bring your own delimiter:
-import { makePromptTag } from 'tprompt';
+import { makePromptTag } from '@nkwib/tprompt';
 
 const angle = makePromptTag({ open: '<<', close: '>>' });
 angle('Hi <<name>>').with({ name: 'world' });
@@ -103,7 +103,7 @@ angle('Hi <<name>>').with({ name: 'world' });
 
 ```ts
 // Pre-applied {var} variant:
-import { prompt } from 'tprompt/single-brace';
+import { prompt } from '@nkwib/tprompt/single-brace';
 
 prompt('Hi {name}').with({ name: 'world' });
 // "Hi world"
@@ -113,7 +113,7 @@ prompt('Hi {name}').with({ name: 'world' });
 
 <h2 id="esm-cjs">ESM / CJS</h2>
 
-Transparent — the same `import` (or `require`) of `'tprompt'` resolves to the right bytes per environment via conditional exports. There is no `tprompt/compat` subpath; module-system interop is handled invisibly. See [ADR-0003](/adr/0003-esm-cjs-interop-boundary).
+Transparent — the same `import` (or `require`) of `'@nkwib/tprompt'` resolves to the right bytes per environment via conditional exports. There is no `tprompt/compat` subpath; module-system interop is handled invisibly. See [ADR-0003](/adr/0003-esm-cjs-interop-boundary).
 
 ```json
 "exports": {

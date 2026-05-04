@@ -26,7 +26,7 @@ This means the same source file ``prompt`Hello {{name}}` `` would either fail to
 ## Why this shape
 
 - **Single generic at the type level** is forced once the factory exists — N hard-coded compiled-template types per delimiter would require duplicating every method signature and would foreclose user-defined delimiters entirely. The generic costs nothing at the type-checker level (both shapes recurse over the strings array; the only delta is whether `Open`/`Close` are bound at definition or call site).
-- **Factory-only would be dishonest.** "Pluggable from day one" is a public promise in the README's first paragraph. If the only path to a non-default delimiter is `makePromptTag` and 95% of readers see only `import { prompt } from 'tprompt'`, the promise reads as marketing — they'll assume `{{var}}` is hard-coded.
+- **Factory-only would be dishonest.** "Pluggable from day one" is a public promise in the README's first paragraph. If the only path to a non-default delimiter is `makePromptTag` and 95% of readers see only `import { prompt } from '@nkwib/tprompt'`, the promise reads as marketing — they'll assume `{{var}}` is hard-coded.
 - **Named-exports-only would be brittle.** A user with prompts containing literal `{{...}}` content (meta-prompts, prompts about Mustache itself, prompts that reference templating syntax) needs a per-call-site delimiter swap without a library release. `makePromptTag({ open: '<<', close: '>>' })` solves it in one line.
 - **The 2KB tree-shaking objection to a factory dissolves.** The factory is ~200 bytes of generic code shared by every pre-applied function; there is no version of this where dropping the factory saves a meaningful fraction of the bundle.
 
