@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { prompt } from '../../src/single-brace.js';
 
-describe('tprompt/single-brace', () => {
+describe('@nkwib/tprompt/single-brace', () => {
   it('substitutes {var} placeholders', () => {
     const t = prompt('Hello {name}');
     expect(t.with({ name: 'Alice' })).toBe('Hello Alice');

@@ -6,7 +6,7 @@ status: accepted
 
 ## The boundary
 
-Source is ESM (`"type": "module"` in `package.json`, `import` syntax in `.ts` files, explicit `.js` extensions on relative imports under `--module nodenext`). The build emits both an ESM and a CJS artifact per public entry, wired together with conditional exports so module-system interop is invisible to consumers — the same `import` (or `require`) of `'tprompt'` resolves to the right bytes per environment.
+Source is ESM (`"type": "module"` in `package.json`, `import` syntax in `.ts` files, explicit `.js` extensions on relative imports under `--module nodenext`). The build emits both an ESM and a CJS artifact per public entry, wired together with conditional exports so module-system interop is invisible to consumers — the same `import` (or `require`) of `'@nkwib/tprompt'` resolves to the right bytes per environment.
 
 `package.json#exports` shape:
 

@@ -23,7 +23,7 @@ describe.skipIf(!existsSync(cliPath))('tprompt init CLI', () => {
       encoding: 'utf8'
     });
     const example = readFileSync(join(workDir, 'prompts', 'example.ts'), 'utf8');
-    expect(example).toContain("import { prompt } from 'tprompt';");
+    expect(example).toContain("import { prompt } from '@nkwib/tprompt';");
     expect(example).toContain("prompt('Hello, {{name}}!')");
     expect(example).toContain('.with({ name:');
     expect(stdout).toContain('created');

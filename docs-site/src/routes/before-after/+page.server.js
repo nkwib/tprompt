@@ -27,7 +27,7 @@ const { text } = await generateText({
 
 const afterCode = `import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
-import { prompt } from 'tprompt';
+import { prompt } from '@nkwib/tprompt';
 
 const supportSystem = prompt(
   'You are a support agent for {{usrName}} on plan {{planTier}}, locale {{locale}}.'

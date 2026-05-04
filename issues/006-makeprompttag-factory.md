@@ -24,7 +24,7 @@ Expose the parser as a pluggable factory. Replace the default-export `prompt` fr
 ### Build / package
 
 - [x] `tsup.config.ts` already lists `src/single-brace.ts` as an entry — verify it produces `dist/single-brace.js`, `.cjs`, `.d.ts`
-- [x] `package.json#exports` already wires `./single-brace` per ADR-0003 — verify `import { prompt } from 'tprompt/single-brace'` resolves correctly after build (deferred tarball-install verification to issue 012; build outputs verified)
+- [x] `package.json#exports` already wires `./single-brace` per ADR-0003 — verify `import { prompt } from '@nkwib/tprompt/single-brace'` resolves correctly after build (deferred tarball-install verification to issue 012; build outputs verified)
 
 ### Tests
 

@@ -7,7 +7,7 @@ import lzString from 'lz-string';
 const { compressToEncodedURIComponent } = lzString;
 
 const snippet = `// tprompt type-only stub for TS Playground.
-// In a real project you would write \`import { prompt } from 'tprompt'\` —
+// In a real project you would write \`import { prompt } from '@nkwib/tprompt'\` —
 // this stub is inlined here so the Playground link works without npm.
 
 type Letter =

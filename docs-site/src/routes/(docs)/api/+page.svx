@@ -18,10 +18,10 @@ The full public surface of tprompt is one factory, one default export, and one r
 
 | Export | From | What |
 | --- | --- | --- |
-| `prompt` | `'tprompt'` | The default Compile call, pre-applied to `{'{{var}}'}` |
-| `prompt` | `'tprompt/single-brace'` | Pre-applied to `{'{var}'}` |
-| `makePromptTag` | `'tprompt'` | Factory; returns a `prompt` for any `{ open, close }` pair |
-| `Compiled`, `PartialApplied`, `Validated`, `ValidatedSafe`, etc. | `'tprompt'` | Type-only exports — covered below |
+| `prompt` | `'@nkwib/tprompt'` | The default Compile call, pre-applied to `{'{{var}}'}` |
+| `prompt` | `'@nkwib/tprompt/single-brace'` | Pre-applied to `{'{var}'}` |
+| `makePromptTag` | `'@nkwib/tprompt'` | Factory; returns a `prompt` for any `{ open, close }` pair |
+| `Compiled`, `PartialApplied`, `Validated`, `ValidatedSafe`, etc. | `'@nkwib/tprompt'` | Type-only exports — covered below |
 
 ## `prompt`
 
@@ -29,10 +29,10 @@ The full public surface of tprompt is one factory, one default export, and one r
 const prompt: <const S extends string>(template: S) => Compiled<readonly [S], '{{', '}}'>;
 ```
 
-The `prompt` import from `'tprompt'` is `makePromptTag({ open: '{{', close: '}}' })`. The `<const S extends string>` is what makes the wedge work — it preserves the literal type of the template through the call so `ExtractPlaceholders` can run at the type level.
+The `prompt` import from `'@nkwib/tprompt'` is `makePromptTag({ open: '{{', close: '}}' })`. The `<const S extends string>` is what makes the wedge work — it preserves the literal type of the template through the call so `ExtractPlaceholders` can run at the type level.
 
 ```ts
-import { prompt } from 'tprompt';
+import { prompt } from '@nkwib/tprompt';
 
 const t = prompt('Hi {{name}}');
 //        ^? Compiled<readonly ['Hi {{name}}'], '{{', '}}'>
@@ -54,7 +54,7 @@ interface ParserOptions<Open extends string, Close extends string> {
 Returns a `prompt`-shaped function specialised to a delimiter pair. Used at module top-level for project-wide custom delimiters or per call site for prompts that contain literal `{'{{ }}'}` content.
 
 ```ts
-import { makePromptTag } from 'tprompt';
+import { makePromptTag } from '@nkwib/tprompt';
 
 const angle = makePromptTag({ open: '<<', close: '>>' });
 angle('Hi <<name>>').with({ name: 'world' }); // "Hi world"
@@ -198,10 +198,10 @@ All five share `.strings`, `.open`, `.close`, `.placeholders`, and `.with` — t
 
 ```ts
 // Default — {{var}} (LangChain / BAML / OpenAI / Anthropic convention)
-import { prompt, makePromptTag } from 'tprompt';
+import { prompt, makePromptTag } from '@nkwib/tprompt';
 
 // Pre-applied — {var} (Python f-string-style)
-import { prompt } from 'tprompt/single-brace';
+import { prompt } from '@nkwib/tprompt/single-brace';
 
 // Type-only
 import type {
@@ -213,7 +213,7 @@ import type {
   VariablesOf,
   SchemaLike,
   ValidationResult
-} from 'tprompt';
+} from '@nkwib/tprompt';
 ```
 
 The subpath namespace is **reserved for behaviour variants** (delimiter, escape policy, future flavours). ESM/CJS interop is handled by conditional exports — there is no `tprompt/compat`. See [ADR-0002](/adr/0002-pluggable-parser-architecture) and [ADR-0003](/adr/0003-esm-cjs-interop-boundary).
