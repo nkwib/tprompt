@@ -1,6 +1,6 @@
 {
   "name": "@nkwib/tprompt",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Type-safe prompt template library for TypeScript. A small (~1.4KB gzipped) primitive that turns prompt placeholder typos into tsc errors.",
   "type": "module",
   "sideEffects": false,
