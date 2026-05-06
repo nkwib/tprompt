@@ -1,7 +1,7 @@
 {
   "name": "@nkwib/tprompt",
   "version": "0.1.1",
-  "description": "Type-safe prompt template library for TypeScript. A 2KB tagged-template primitive that turns prompt placeholder typos into tsc errors.",
+  "description": "Type-safe prompt template library for TypeScript. A small (~1.4KB gzipped) primitive that turns prompt placeholder typos into tsc errors.",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
@@ -25,8 +25,12 @@
     "README.md",
     "LICENSE",
     "CONTEXT.md",
+    "CONTRIBUTING.md",
     "docs/adr"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "tprompt": "./dist/cli.cjs"
   },
@@ -66,8 +70,7 @@
     "typescript",
     "type-safe",
     "llm",
-    "ai",
-    "tagged-template"
+    "ai"
   ],
   "author": "Gabriele Magno <gabriele.magno@nearform.com>",
   "license": "MIT",
