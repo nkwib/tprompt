@@ -1,6 +1,6 @@
 # tprompt
 
-Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
+Type-safe prompt template library for TypeScript. A small primitive (~6.5KB unminified, ~1.4KB gzipped) that turns prompt placeholder typos into `tsc` errors before they reach the model.
 tprompt is **variables only, no template logic** — no `{{#if}}`, no loops, no DSL. If you need conditionals or iteration, build them in TypeScript and pass strings.
 
 ## Quick start
@@ -65,7 +65,7 @@ prompt('Hi {name}').with({ name: 'world' });
 
 Transparent — the same `import` (or `require`) of `'@nkwib/tprompt'` resolves to the right bytes per environment via conditional exports. There is no `tprompt/compat` subpath; module-system interop is handled invisibly. See [ADR-0003](./docs/adr/0003-esm-cjs-interop-boundary.md).
 
-`engines.node` is `>= 20`. `sideEffects: false` is honoured by all modern bundlers (Vite, esbuild, webpack 5+, Rollup) — the 2KB pitch holds at consumer level.
+`engines.node` is `>= 20`. `sideEffects: false` is honoured by all modern bundlers (Vite, esbuild, webpack 5+, Rollup) — the small-bundle pitch (~1.4KB gzipped) holds at consumer level.
 
 ## Runtime validation: `.validate()` and `.validateSafe()`
 
@@ -97,6 +97,36 @@ if (result.ok) {
 These two methods are the hardest API to explain — read the section above slowly. The default is `.validate()` (throws). Reach for `.validateSafe()` only when the failure is a value you want to inspect. Mixing them produces dead code; pick one per call site.
 
 `zod` is an **optional** peer dependency — tprompt accepts any object with `.parse(value)` and `.safeParse(value)` shape, so Valibot, ArkType, or your own validator all work. The library never imports `zod` at module load; the validation surface is structural.
+
+## Missing keys throw
+
+If `.with({...})` is called with a placeholder name absent from the supplied
+object (typically because TypeScript was bypassed via `as` or `any`), tprompt
+throws `MissingPlaceholderError` rather than silently rendering the literal
+string `"undefined"` into a prompt sent to a model.
+
+```ts
+import { prompt, MissingPlaceholderError } from '@nkwib/tprompt';
+
+const t = prompt('Hi {{name}}');
+const cast = t.with as (v: Record<string, unknown>) => string;
+cast({}); // throws MissingPlaceholderError: missing placeholder value(s): "name"
+```
+
+If you depend on the legacy behavior, opt back in via the factory:
+
+```ts
+import { makePromptTag } from '@nkwib/tprompt';
+
+const lenient = makePromptTag({
+  open: '{{',
+  close: '}}',
+  onMissing: 'insert-undefined'
+});
+```
+
+Explicit `undefined` values still render through `String(undefined)` in both
+modes; only absent keys trigger the throw.
 
 ## Non-goals
 

@@ -11,7 +11,7 @@
     </div>
     <div class="links">
       <a href="https://github.com/nkwib/tprompt" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.npmjs.com/package/tprompt" target="_blank" rel="noopener">npm</a>
+      <a href="https://www.npmjs.com/package/@nkwib/tprompt" target="_blank" rel="noopener">npm</a>
       <a
         href="https://github.com/nkwib/tprompt/blob/main/LICENSE"
         target="_blank"
