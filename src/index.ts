@@ -13,6 +13,8 @@ export type {
 } from './types.js';
 export type { ParserOptions } from './factory.js';
 export { makePromptTag } from './factory.js';
+export { MissingPlaceholderError } from './parser.js';
+export type { RenderOptions } from './parser.js';
 
 import { makePromptTag } from './factory.js';
 

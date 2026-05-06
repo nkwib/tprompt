@@ -68,7 +68,18 @@ export function main(argv: readonly string[]): number {
   return 1;
 }
 
-const argv1 = process.argv[1] ?? '';
-if (argv1.endsWith('cli.cjs') || argv1.endsWith('cli.js')) {
+// Only run the CLI when this file is the entry point. The CLI ships as a CJS
+// bundle, so `require.main === module` is the canonical guard. The previous
+// `argv[1].endsWith('cli.cjs')` heuristic could fire spuriously when the CLI
+// was bundled into a consumer app whose entry happened to share that filename.
+declare const require: { main?: unknown } | undefined;
+declare const module: unknown;
+
+const isCjsEntry =
+  typeof require !== 'undefined' &&
+  typeof module !== 'undefined' &&
+  (require as { main?: unknown }).main === module;
+
+if (isCjsEntry) {
   process.exit(main(process.argv.slice(2)));
 }
