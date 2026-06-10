@@ -40,10 +40,11 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "pnpm build && vitest run && pnpm test:cjs",
+    "test": "pnpm build && vitest run && pnpm test:cjs && pnpm test:esm",
     "test:watch": "vitest",
     "test:types": "vitest --typecheck.only",
     "test:cjs": "node tests/cjs-smoke/test.cjs",
+    "test:esm": "node tests/cjs-smoke/test.mjs",
     "lint": "tsc --noEmit",
     "prepack": "pnpm build",
     "publish:dry": "pnpm build && pnpm publish --dry-run --no-git-checks"

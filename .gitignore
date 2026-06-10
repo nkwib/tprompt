@@ -9,6 +9,9 @@ coverage/
 .cache/
 .pnpm-store/
 *.tgz
+# pnpm repo — npm/yarn lockfiles must never be committed
+package-lock.json
+yarn.lock
 docs-site/.svelte-kit/
 docs-site/build/
 docs-site/node_modules/
