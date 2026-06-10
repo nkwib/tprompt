@@ -138,6 +138,14 @@ tprompt is **variables only**. No template logic, no expression placeholders, no
 
 If you need any of the above, build it in TypeScript and pass strings into `.with({...})`. Pull requests that introduce template logic, expression syntax, or scope-creep beyond a single identifier will be closed with a link to [ADR-0001](./docs/adr/0001-default-delimiter.md) and the non-goals section above.
 
+## Works well with
+
+tprompt is one piece of a small, composable testing stack for LLM code:
+
+- Author your prompts with **tprompt** — typos become `tsc` errors before they reach the model.
+- Record and replay the model calls with [@nkwib/tapedeck](https://github.com/nkwib/tapedeck) — deterministic, offline, stream-accurate tests in CI.
+- Guard tool trajectories with [toolroute](https://github.com/nkwib/toolroute) — assert the agent took the route you expected.
+
 ## Documentation
 
 - [`CONTEXT.md`](./CONTEXT.md) — canonical glossary; terms used in code-level naming

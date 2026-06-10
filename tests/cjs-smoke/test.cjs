@@ -7,11 +7,33 @@ const path = require('node:path');
 const distDir = path.join(__dirname, '..', '..', 'dist');
 const indexCjs = path.join(distDir, 'index.cjs');
 const singleBraceCjs = path.join(distDir, 'single-brace.cjs');
+const cliCjs = path.join(distDir, 'cli.cjs');
 
-if (!fs.existsSync(indexCjs) || !fs.existsSync(singleBraceCjs)) {
+if (
+  !fs.existsSync(indexCjs) ||
+  !fs.existsSync(singleBraceCjs) ||
+  !fs.existsSync(cliCjs)
+) {
   console.error(`CJS smoke test: dist/ artefacts missing under ${distDir}.`);
   console.error('Run `pnpm build` before `pnpm test:cjs`.');
   process.exit(1);
+}
+
+// Regression guard: tsup must keep the `node:` protocol on built-in requires
+// (removeNodeProtocol: false). A bare `require('fs')` breaks runtimes that only
+// expose Node built-ins under the `node:` specifier and is a silent footgun.
+const cliSource = fs.readFileSync(cliCjs, 'utf8');
+for (const builtin of ['fs', 'path', 'util']) {
+  assert.match(
+    cliSource,
+    new RegExp(`require\\('node:${builtin}'\\)`),
+    `dist/cli.cjs should require 'node:${builtin}'`
+  );
+  assert.doesNotMatch(
+    cliSource,
+    new RegExp(`require\\('${builtin}'\\)`),
+    `dist/cli.cjs should not contain a bare require('${builtin}')`
+  );
 }
 
 const { prompt, makePromptTag } = require(indexCjs);
