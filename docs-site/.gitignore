@@ -2,3 +2,5 @@ node_modules/
 .svelte-kit/
 build/
 .DS_Store
+# Generated at build time from the root package.json (scripts/sync-version.mjs)
+src/lib/generated/

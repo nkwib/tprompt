@@ -2,6 +2,7 @@
   import { page } from '$app/stores';
   import Logo from './Logo.svelte';
   import ThemeToggle from './ThemeToggle.svelte';
+  import { version } from '$lib/generated/version.js';
 
   const links = [
     { href: '/docs', label: 'Docs' },
@@ -21,7 +22,7 @@
   <div class="inner">
     <a href="/" class="brand" aria-label="tprompt home">
       <Logo />
-      <span class="version" aria-hidden="true">v0.1</span>
+      <span class="version" aria-hidden="true">v{version}</span>
     </a>
 
     <nav class="nav" aria-label="Primary">

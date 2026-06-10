@@ -21,6 +21,7 @@ The full public surface of tprompt is one factory, one default export, and one r
 | `prompt` | `'@nkwib/tprompt'` | The default Compile call, pre-applied to `{'{{var}}'}` |
 | `prompt` | `'@nkwib/tprompt/single-brace'` | Pre-applied to `{'{var}'}` |
 | `makePromptTag` | `'@nkwib/tprompt'` | Factory; returns a `prompt` for any `{ open, close }` pair |
+| `MissingPlaceholderError` | `'@nkwib/tprompt'` | Thrown by `.with(&lbrace;...&rbrace;)` when a placeholder key is absent (default `onMissing: 'throw'`) |
 | `Compiled`, `PartialApplied`, `Validated`, `ValidatedSafe`, etc. | `'@nkwib/tprompt'` | Type-only exports — covered below |
 
 ## `prompt`
@@ -48,10 +49,13 @@ function makePromptTag<O extends string, C extends string>(
 interface ParserOptions<Open extends string, Close extends string> {
   readonly open: Open;
   readonly close: Close;
+  readonly onMissing?: 'throw' | 'insert-undefined';
 }
 ```
 
 Returns a `prompt`-shaped function specialised to a delimiter pair. Used at module top-level for project-wide custom delimiters or per call site for prompts that contain literal `{'{{ }}'}` content.
+
+`onMissing` controls what happens when `.with(&lbrace;...&rbrace;)` is called with a placeholder key absent from the supplied object (typically because TypeScript was bypassed via `as` or `any`). It defaults to `'throw'`, which raises `MissingPlaceholderError`; pass `'insert-undefined'` to opt back into the legacy behavior of rendering the literal string `"undefined"`. See [Missing keys throw](#missing-keys-throw) below.
 
 ```ts
 import { makePromptTag } from '@nkwib/tprompt';
@@ -121,6 +125,8 @@ greet.with({ name: 'a' });   // throws ZodError
 
 The schema must accept an object whose required keys cover the placeholder set. Anything with `.parse(value)` and `.safeParse(value)` qualifies — Zod, Valibot, ArkType, or your own.
 
+> **Ordering footgun — `.validate()` after `.partial()`.** When you call `.validate(schema)` on a `PartialApplied` (i.e. you bound keys with `.partial(&lbrace;...&rbrace;)` first), the schema validates **only the remaining keys** — the values you pre-bound via `.partial` bypass the schema entirely. This is intentional: the partial already committed those values. If you want every key validated, call `.validate(schema)` first and `.partial(&lbrace;...&rbrace;)` second (validate-then-partial still checks the merged input).
+
 ### `.validateSafe(schema)`
 
 Same shape, but `.with({...})` returns a `ValidationResult` instead of throwing.
@@ -140,6 +146,32 @@ if (r.ok) console.log(r.value); else console.error(r.error);
 ```
 
 `.validate` and `.validateSafe` produce mutually exclusive return shapes — pick one per call site. Mixing them produces dead branches.
+
+<h2 id="missing-keys-throw">Missing keys throw</h2>
+
+If `.with(&lbrace;...&rbrace;)` is called with a placeholder name absent from the supplied object (typically because TypeScript was bypassed via `as` or `any`), tprompt throws `MissingPlaceholderError` rather than silently rendering the literal string `"undefined"` into a prompt sent to a model.
+
+```ts
+import { prompt, MissingPlaceholderError } from '@nkwib/tprompt';
+
+const t = prompt('Hi {{name}}');
+const cast = t.with as (v: Record<string, unknown>) => string;
+cast({}); // throws MissingPlaceholderError: missing placeholder value(s): "name"
+```
+
+If you depend on the legacy behavior, opt back in via the factory:
+
+```ts
+import { makePromptTag } from '@nkwib/tprompt';
+
+const lenient = makePromptTag({
+  open: '{{',
+  close: '}}',
+  onMissing: 'insert-undefined'
+});
+```
+
+Explicit `undefined` values still render through `String(undefined)` in both modes; only absent keys trigger the throw.
 
 ## Type helpers
 
