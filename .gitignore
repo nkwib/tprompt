@@ -17,3 +17,7 @@ docs-site/build/
 docs-site/node_modules/
 BLOCKED.md
 DECISIONS-PENDING.md
+
+# Internal planning docs — not for the public repo
+issues/
+KICKOFF.md
