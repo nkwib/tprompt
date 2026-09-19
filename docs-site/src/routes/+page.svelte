@@ -8,7 +8,7 @@
   <title>tprompt — type-safe prompt templates for TypeScript</title>
   <meta
     name="description"
-    content="A 2KB primitive that turns prompt placeholder typos into tsc errors before they reach the model."
+    content="A small (~1.4KB gzipped) primitive that turns prompt placeholder typos into tsc errors before they reach the model."
   />
 </svelte:head>
 
@@ -17,14 +17,14 @@
     <div class="hero-copy">
       <span class="badge">
         <span class="dot" aria-hidden="true"></span>
-        v{version} · MIT · 2KB · zero deps
+        v{version} · MIT · ~1.4KB gzip · zero deps
       </span>
       <h1>
         Catch prompt typos<br />
         <span class="accent">before</span> they reach the&nbsp;model.
       </h1>
       <p class="lede">
-        <strong>tprompt</strong> is a 2KB TypeScript primitive that turns
+        <strong>tprompt</strong> is a small (~1.4KB gzipped) TypeScript primitive that turns
         <code>{'{{usrName}}'}</code>
         into a <code>tsc</code> error — not a silent runtime string the model receives.
       </p>
@@ -132,7 +132,7 @@ greet.<span class="fn">with</span>(&lbrace; <span class="bad">usrName</span>: <s
           />
         </svg>
       </div>
-      <h3>2KB. Zero deps.</h3>
+      <h3>~1.4KB gzipped. Zero deps.</h3>
       <p>
         <code>sideEffects: false</code>, ESM source, dual-published. Validation
         is structural — bring Zod, Valibot, ArkType, or your own.

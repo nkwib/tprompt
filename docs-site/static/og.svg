@@ -21,7 +21,7 @@
   <text x="80" y="362"
         font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif"
         font-size="26" font-weight="400"
-        fill="#57534e">A 2KB primitive that turns prompt placeholder typos into tsc errors.</text>
+        fill="#57534e">A small primitive that turns prompt placeholder typos into tsc errors.</text>
 
   <g transform="translate(80, 416)">
     <rect width="1040" height="142" rx="14" fill="#f5f5f4" stroke="#e7e5e4" stroke-width="1"/>

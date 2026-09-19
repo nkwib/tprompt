@@ -6,13 +6,13 @@ title: 'tprompt · Guide'
   <title>tprompt · Guide</title>
   <meta
     name="description"
-    content="Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into tsc errors before they reach the model."
+    content="Type-safe prompt template library for TypeScript. A small (~1.4KB gzipped) primitive that turns prompt placeholder typos into tsc errors before they reach the model."
   />
 </svelte:head>
 
 # Guide
 
-Type-safe prompt template library for TypeScript. A 2KB primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
+Type-safe prompt template library for TypeScript. A small (~6.5KB unminified, ~1.4KB gzipped) primitive that turns prompt placeholder typos into `tsc` errors before they reach the model.
 
 tprompt is **variables only, no template logic** — no `{'{{#if}}'}`, no loops, no DSL. If you need conditionals or iteration, build them in TypeScript and pass strings.
 
@@ -24,7 +24,7 @@ pnpm add @nkwib/tprompt
 pnpm add zod
 ```
 
-`engines.node` is `>= 20`. `sideEffects: false` is honoured by all modern bundlers (Vite, esbuild, webpack 5+, Rollup) — the 2KB pitch holds at consumer level.
+`engines.node` is `>= 20`. `sideEffects: false` is honoured by all modern bundlers (Vite, esbuild, webpack 5+, Rollup): the small-bundle pitch (~1.4KB gzipped) holds at consumer level.
 
 <h2 id="usage">Quick start</h2>
 
