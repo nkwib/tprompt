@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/node": "^26.6.3",
     "lz-string": "^1.5.0",
-    "tsup": "^8.0.0",
+    "tsup": "^9.0.0",
     "typescript": "^5.5.0",
     "vitest": "^5.0.3",
     "zod": "^4.6.5"
